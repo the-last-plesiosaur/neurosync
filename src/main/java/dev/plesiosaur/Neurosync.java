@@ -2,6 +2,7 @@ package dev.plesiosaur;
 
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Neurosync {
     static void main() {
@@ -37,7 +38,28 @@ public class Neurosync {
 
         frame.setJMenuBar(menuBar);
 
+        JPanel sidePanel = sidebar();
+
+        frame.getContentPane().add(sidePanel);
+
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    private static JPanel sidebar() {
+        JList<String> sidebar = new JList<>(
+                new String[]{"Vault A", "Vault B", "Vault C"}
+        );
+
+        JPanel panel = new JPanel(new BorderLayout(5, 5));
+        panel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        JLabel title =  new JLabel("Vaults");
+
+        sidebar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        panel.add(title, BorderLayout.NORTH);
+        panel.add(new JScrollPane(sidebar), BorderLayout.CENTER);
+
+        return panel;
     }
 }
