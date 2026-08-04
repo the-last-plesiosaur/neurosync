@@ -12,7 +12,7 @@ public class Neurosync {
     private static void showGui() {
         JFrame frame = new JFrame("Neurosync");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+        frame.setSize(1000, 800);
 
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
@@ -39,8 +39,16 @@ public class Neurosync {
         frame.setJMenuBar(menuBar);
 
         JPanel sidePanel = sidebar();
+        sidePanel.setPreferredSize(new Dimension(250, 0));
 
-        frame.getContentPane().add(sidePanel);
+        JPanel mainPanel = mainPanel();
+        //mainPanel.setMinimumSize(new Dimension(400, 0));
+
+        JPanel contentPanel = new JPanel(new BorderLayout());
+        contentPanel.add(sidePanel, BorderLayout.WEST);
+        contentPanel.add(mainPanel, BorderLayout.CENTER);
+
+        frame.getContentPane().add(contentPanel);
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -58,7 +66,28 @@ public class Neurosync {
         sidebar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         panel.add(title, BorderLayout.NORTH);
-        panel.add(new JScrollPane(sidebar), BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(sidebar);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    private static JPanel mainPanel() {
+        JList<String> sidebar = new JList<>(
+                new String[]{"Shard A", "Shard B", "Shard C"}
+        );
+
+        JPanel panel = new JPanel(new BorderLayout(5, 5));
+        panel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        JLabel title =  new JLabel("Shards");
+
+        sidebar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        panel.add(title, BorderLayout.NORTH);
+        JScrollPane scrollPane = new JScrollPane(sidebar);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        panel.add(scrollPane, BorderLayout.CENTER);
 
         return panel;
     }
