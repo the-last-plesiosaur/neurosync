@@ -82,6 +82,13 @@ public class Neurosync {
             @Override
             public boolean isCellEditable(int row, int column) {  return false; }
         };
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setColumnSelectionAllowed(false);
+        table.setCellSelectionEnabled(false);
+        table.setRowSelectionAllowed(true);
+
+        table.setAutoCreateRowSorter(true);
+
 
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
