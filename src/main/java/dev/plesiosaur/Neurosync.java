@@ -67,7 +67,8 @@ public class Neurosync {
 
     private static JPanel shardTable() {
         JPanel shards = new JPanel();
-        shards.setLayout(new BorderLayout());
+        shards.setLayout(new BorderLayout(5, 5));
+        shards.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
         String[] columnNames = new String[]{"Id", "Key", "Review", "Jacks", "Flagged"};
         Object[][] data = {
