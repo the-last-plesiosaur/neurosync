@@ -3,6 +3,8 @@ package dev.plesiosaur;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -90,6 +92,36 @@ public class Neurosync {
         table.setAutoCreateRowSorter(true);
 
 
+        JPopupMenu popup = tableMenu();
+
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) { handlePopup(e); }
+
+            @Override
+            public void mouseReleased(MouseEvent e) { handlePopup(e); }
+
+            private void handlePopup(MouseEvent e) {
+                if(e.isPopupTrigger()) {
+                    JTable source = (JTable) e.getSource();
+                    int row = source.rowAtPoint(e.getPoint());
+                    int column = source.columnAtPoint(e.getPoint());
+
+                    if(row >= 0 && row < source.getRowCount()) {
+                        if(!source.isRowSelected(row)) {
+                            source.changeSelection(row, column, false, false);
+                        }
+
+                        popup.show(source, e.getX(), e.getY());
+                    }
+                }
+            }
+        });
+
+
+
+
+
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
 
@@ -144,4 +176,22 @@ public class Neurosync {
 
         return panel;
     }
+
+    private static JPopupMenu tableMenu() {
+        JPopupMenu menu = new JPopupMenu();
+
+        JMenuItem rekeyShard = new JMenuItem("Rekey");
+        JMenuItem freezeShard = new JMenuItem("Freeze");
+        JMenuItem flagShard = new JMenuItem("Flag");
+        JMenuItem purgeShard = new JMenuItem("Purge");
+
+        menu.add(rekeyShard);
+        menu.add(freezeShard);
+        menu.add(flagShard);
+        menu.addSeparator();
+        menu.add(purgeShard);
+
+        return menu;
+    }
+
 }
