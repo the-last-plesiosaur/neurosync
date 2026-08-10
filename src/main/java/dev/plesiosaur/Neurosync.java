@@ -1,8 +1,8 @@
 package dev.plesiosaur;
 
 
-import com.sun.tools.javac.Main;
 import dev.plesiosaur.gui.MainMenuBar;
+import dev.plesiosaur.model.AppModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,11 +17,13 @@ public class Neurosync {
     }
 
     private static void showGui() {
+        AppModel model = new AppModel();
+
         JFrame frame = new JFrame("Neurosync");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 800);
 
-        frame.setJMenuBar(MainMenuBar.create());
+        frame.setJMenuBar(MainMenuBar.create(model));
 
         JPanel shardPanel = shardTable();
         frame.getContentPane().add(shardPanel);

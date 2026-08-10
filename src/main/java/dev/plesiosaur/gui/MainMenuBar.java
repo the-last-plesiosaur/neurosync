@@ -1,11 +1,17 @@
 package dev.plesiosaur.gui;
 
+import dev.plesiosaur.model.AppModel;
+
 import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class MainMenuBar extends JMenuBar {
+public class MainMenuBar extends JMenuBar implements PropertyChangeListener {
 
-    public static MainMenuBar create() {
+    public static MainMenuBar create(AppModel model) {
         MainMenuBar menuBar = new MainMenuBar();
+
+        model.addPropertyChangeListener(menuBar);
 
         JMenu vaultMenu = new JMenu("Vault");
         JMenu shardMenu = new JMenu("Shard");
@@ -22,6 +28,12 @@ public class MainMenuBar extends JMenuBar {
         JMenuItem vaultUndoItem = new JMenuItem("Undo");
         JMenuItem vaultRedoItem = new JMenuItem("Redo");
         JMenuItem vaultCloseItem = new JMenuItem("Close");
+
+
+        vaultNewItem.addActionListener(e -> {
+           IO.println("Create New Vault");
+           model.setVaultOpen(true);
+        });
 
         vaultCloseItem.addActionListener(e -> {
             System.exit(0);
@@ -49,10 +61,17 @@ public class MainMenuBar extends JMenuBar {
         shardMenu.add(shardRekeyItem);
         shardMenu.addSeparator();
         shardMenu.add(shardPurgeItem);
+        //shardMenu.setEnabled(false);
 
-        JMenuItem signalJackStart = new JMenuItem("Start");
-        jackMenu.add(signalJackStart);
+        JMenuItem signalJackQueued = new JMenuItem("Queued");
+        JMenuItem signalJackQueuedByKey = new JMenuItem("Queued by Key");
+        JMenuItem signalJackByKey = new JMenuItem("By Key");
+        JMenuItem signalJackAll = new JMenuItem("All");
 
+        jackMenu.add(signalJackQueued);
+        jackMenu.add(signalJackQueuedByKey);
+        jackMenu.add(signalJackByKey);
+        jackMenu.add(signalJackAll);
 
         return menuBar;
     }
@@ -61,4 +80,8 @@ public class MainMenuBar extends JMenuBar {
         super();
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        IO.println("Vaulted opened");
+    }
 }
