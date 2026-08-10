@@ -6,36 +6,39 @@ import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class MainMenuBar extends JMenuBar implements PropertyChangeListener {
+public class MainMenuBar extends JMenuBar {
 
-    public static MainMenuBar create(AppModel model) {
-        MainMenuBar menuBar = new MainMenuBar();
+    //private final AppModel model;
 
-        model.addPropertyChangeListener(menuBar);
+    public MainMenuBar(AppModel model) {
+        super();
+
+        // Vault Menu
 
         JMenu vaultMenu = new JMenu("Vault");
-        JMenu shardMenu = new JMenu("Shard");
-        JMenu jackMenu = new JMenu("Signal Jack");
-
-        menuBar.add(vaultMenu);
-        menuBar.add(shardMenu);
-        menuBar.add(jackMenu);
 
         JMenuItem vaultNewItem = new JMenuItem("New");
         JMenuItem vaultOpenItem = new JMenuItem("Open");
         JMenuItem vaultSaveItem = new JMenuItem("Save");
         JMenuItem vaultSaveAsItem = new JMenuItem("Save As");
+        JMenuItem vaultCloseItem = new JMenuItem("Close");
         JMenuItem vaultUndoItem = new JMenuItem("Undo");
         JMenuItem vaultRedoItem = new JMenuItem("Redo");
-        JMenuItem vaultCloseItem = new JMenuItem("Close");
+        JMenuItem vaultExitItem = new JMenuItem("Exit");
 
+        vaultSaveItem.setEnabled(false);
+        vaultSaveAsItem.setEnabled(false);
+        vaultCloseItem.setEnabled(false);
 
         vaultNewItem.addActionListener(e -> {
-           IO.println("Create New Vault");
-           model.setVaultOpen(true);
+            model.setVaultOpen(true);
         });
 
         vaultCloseItem.addActionListener(e -> {
+            model.setVaultOpen(false);
+        });
+
+        vaultExitItem.addActionListener(e -> {
             System.exit(0);
         });
 
@@ -43,11 +46,18 @@ public class MainMenuBar extends JMenuBar implements PropertyChangeListener {
         vaultMenu.add(vaultOpenItem);
         vaultMenu.add(vaultSaveItem);
         vaultMenu.add(vaultSaveAsItem);
+        vaultMenu.add(vaultCloseItem);
         vaultMenu.addSeparator();
         vaultMenu.add(vaultUndoItem);
         vaultMenu.add(vaultRedoItem);
         vaultMenu.addSeparator();
-        vaultMenu.add(vaultCloseItem);
+        vaultMenu.add(vaultExitItem);
+
+
+        // Shard Menu
+
+        JMenu shardMenu = new JMenu("Shard");
+        shardMenu.setEnabled(false);
 
         JMenuItem shardNewItem = new JMenuItem("New");
         JMenuItem shardRekeyItem = new JMenuItem("Rekey");
@@ -61,7 +71,12 @@ public class MainMenuBar extends JMenuBar implements PropertyChangeListener {
         shardMenu.add(shardRekeyItem);
         shardMenu.addSeparator();
         shardMenu.add(shardPurgeItem);
-        //shardMenu.setEnabled(false);
+
+
+        // Signal Jack Menu
+
+        JMenu jackMenu = new JMenu("Signal Jack");
+        jackMenu.setEnabled(false);
 
         JMenuItem signalJackQueued = new JMenuItem("Queued");
         JMenuItem signalJackQueuedByKey = new JMenuItem("Queued by Key");
@@ -73,15 +88,33 @@ public class MainMenuBar extends JMenuBar implements PropertyChangeListener {
         jackMenu.add(signalJackByKey);
         jackMenu.add(signalJackAll);
 
-        return menuBar;
+        // Add all menus to bar
+
+        this.add(vaultMenu);
+        this.add(shardMenu);
+        this.add(jackMenu);
+
+        // AppModel property changes
+
+        model.addPropertyChangeListener(e -> {
+          if(e.getPropertyName().equals(AppModel.VAULT_OPEN) && e.getNewValue().equals(true)) {
+              shardMenu.setEnabled(true);
+              jackMenu.setEnabled(true);
+              vaultSaveItem.setEnabled(true);
+              vaultSaveAsItem.setEnabled(true);
+              vaultCloseItem.setEnabled(true);
+          } else if (e.getPropertyName().equals(AppModel.VAULT_OPEN) && e.getNewValue().equals(false)) {
+              shardMenu.setEnabled(false);
+              jackMenu.setEnabled(false);
+              vaultSaveItem.setEnabled(false);
+              vaultSaveAsItem.setEnabled(false);
+              vaultCloseItem.setEnabled(false);
+          }
+        });
+
+
+
     }
 
-    private MainMenuBar() {
-        super();
-    }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        IO.println("Vaulted opened");
-    }
 }
