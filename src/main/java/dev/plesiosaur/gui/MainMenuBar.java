@@ -4,14 +4,13 @@ import dev.plesiosaur.AppController;
 import dev.plesiosaur.model.AppModel;
 
 import javax.swing.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.io.File;
 
 public class MainMenuBar extends JMenuBar {
 
     //private final AppModel model;
 
-    public MainMenuBar(AppModel model, AppController controller) {
+    public MainMenuBar(JFrame frame, AppModel model, AppController controller) {
         super();
 
         // Vault Menu
@@ -40,6 +39,15 @@ public class MainMenuBar extends JMenuBar {
 
         vaultCloseItem.addActionListener(e -> {
            controller.closeVault();
+        });
+
+        vaultOpenItem.addActionListener(e -> {
+           JFileChooser chooser = new JFileChooser();
+            int selection = chooser.showOpenDialog(frame);
+            if(selection == JFileChooser.APPROVE_OPTION) {
+                File file = chooser.getSelectedFile();
+                controller.openVault(file.getAbsolutePath());
+            }
         });
 
         vaultExitItem.addActionListener(e -> {

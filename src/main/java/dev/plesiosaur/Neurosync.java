@@ -24,7 +24,8 @@ public class Neurosync {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 800);
 
-        frame.setJMenuBar(new MainMenuBar(model, controller));
+        MainMenuBar mmb = new  MainMenuBar(frame, model, controller);
+        frame.setJMenuBar(mmb);
 
         JPanel shardPanel = shardTable();
         frame.getContentPane().add(shardPanel);

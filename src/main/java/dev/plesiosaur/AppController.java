@@ -21,6 +21,7 @@ public class AppController {
     }
 
     public void openVault(String fileName) {
+        model.setVaultOpen(true);
 
     }
 
