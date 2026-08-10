@@ -8,8 +8,6 @@ import java.io.File;
 
 public class MainMenuBar extends JMenuBar {
 
-    //private final AppModel model;
-
     public MainMenuBar(JFrame frame, AppModel model, AppController controller) {
         super();
 
@@ -51,7 +49,18 @@ public class MainMenuBar extends JMenuBar {
         });
 
         vaultExitItem.addActionListener(e -> {
-            System.exit(0);
+            if(model.isVaultDirty()) {
+                int response = JOptionPane.showConfirmDialog(frame,
+                        "Vault not saved. Exit without saving?",
+                        "Select an Option",
+                        JOptionPane.OK_CANCEL_OPTION);
+
+                if(response == JOptionPane.OK_OPTION) {
+                    System.exit(0);
+                }
+            } else {
+                System.exit(0);
+            }
         });
 
         vaultMenu.add(vaultNewItem);

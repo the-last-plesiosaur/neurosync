@@ -10,14 +10,14 @@ public class AppController {
         this.model = model;
     }
 
-
     public void newVault() {
         model.setVaultOpen(true);
-
+        model.setVaultDirty(true);
     }
 
     public void closeVault() {
         model.setVaultOpen(false);
+        model.setVaultDirty(false);
     }
 
     public void openVault(String fileName) {

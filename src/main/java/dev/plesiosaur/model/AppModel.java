@@ -6,10 +6,12 @@ import java.beans.PropertyChangeSupport;
 public class AppModel {
 
     public static String VAULT_OPEN = "VAULT_OPEN";
+    public static String VAULT_DIRTY = "VAULT_DIRTY";
 
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     private boolean isVaultOpen = false;
+    private boolean isVaultDirty = false;
 
     public AppModel() { }
 
@@ -26,8 +28,18 @@ public class AppModel {
     }
 
     public void setVaultOpen(boolean vaultOpen) {
-        boolean previous = this.isVaultOpen;
+        boolean previous = isVaultOpen;
         isVaultOpen = vaultOpen;
         propertyChangeSupport.firePropertyChange(VAULT_OPEN, previous, isVaultOpen);
+    }
+
+    public boolean isVaultDirty() {
+        return isVaultDirty;
+    }
+
+    public void setVaultDirty(boolean vaultDirty) {
+        boolean previous = isVaultDirty;
+        isVaultDirty = vaultDirty;
+        propertyChangeSupport.firePropertyChange(VAULT_DIRTY, previous, isVaultDirty);
     }
 }
