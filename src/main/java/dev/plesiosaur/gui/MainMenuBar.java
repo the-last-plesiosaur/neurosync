@@ -1,5 +1,6 @@
 package dev.plesiosaur.gui;
 
+import dev.plesiosaur.AppController;
 import dev.plesiosaur.model.AppModel;
 
 import javax.swing.*;
@@ -10,7 +11,7 @@ public class MainMenuBar extends JMenuBar {
 
     //private final AppModel model;
 
-    public MainMenuBar(AppModel model) {
+    public MainMenuBar(AppModel model, AppController controller) {
         super();
 
         // Vault Menu
@@ -30,12 +31,15 @@ public class MainMenuBar extends JMenuBar {
         vaultSaveAsItem.setEnabled(false);
         vaultCloseItem.setEnabled(false);
 
+        vaultUndoItem.setEnabled(false);
+        vaultRedoItem.setEnabled(false);
+
         vaultNewItem.addActionListener(e -> {
-            model.setVaultOpen(true);
+            controller.newVault();
         });
 
         vaultCloseItem.addActionListener(e -> {
-            model.setVaultOpen(false);
+           controller.closeVault();
         });
 
         vaultExitItem.addActionListener(e -> {

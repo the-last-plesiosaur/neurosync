@@ -18,12 +18,13 @@ public class Neurosync {
 
     private static void showGui() {
         AppModel model = new AppModel();
+        AppController controller = new AppController(model);
 
         JFrame frame = new JFrame("Neurosync");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 800);
 
-        frame.setJMenuBar(new MainMenuBar(model));
+        frame.setJMenuBar(new MainMenuBar(model, controller));
 
         JPanel shardPanel = shardTable();
         frame.getContentPane().add(shardPanel);
