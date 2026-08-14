@@ -2,14 +2,13 @@ package dev.plesiosaur;
 
 
 import dev.plesiosaur.gui.MainMenuBar;
+import dev.plesiosaur.gui.ShardTableModel;
 import dev.plesiosaur.model.AppModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.ZonedDateTime;
-import java.util.UUID;
 
 public class Neurosync {
     static void main() {
@@ -27,30 +26,22 @@ public class Neurosync {
         MainMenuBar mmb = new  MainMenuBar(frame, model, controller);
         frame.setJMenuBar(mmb);
 
-        JPanel shardPanel = shardTable();
+        JPanel shardPanel = shardTable(model);
         frame.getContentPane().add(shardPanel);
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    private static JPanel shardTable() {
+    private static JPanel shardTable(AppModel model) {
         JPanel shards = new JPanel();
         shards.setLayout(new BorderLayout(5, 5));
         shards.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-        String[] columnNames = new String[]{"Id", "Key", "Review", "Jacks", "Flagged"};
-        Object[][] data = {
-                {UUID.randomUUID(), "Vault A", ZonedDateTime.now(), 6, false},
-                {UUID.randomUUID(), "Vault B", ZonedDateTime.now(), 2, true},
-                {UUID.randomUUID(), "Vault C", ZonedDateTime.now(), 0, false},
-                {UUID.randomUUID(), "Vault A", ZonedDateTime.now(), 1, true}
-        };
+        ShardTableModel stm = new ShardTableModel(model.getShardList());
 
-        JTable table = new JTable(data, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {  return false; }
-        };
+        JTable table = new JTable(stm);
+
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setColumnSelectionAllowed(false);
         table.setCellSelectionEnabled(false);

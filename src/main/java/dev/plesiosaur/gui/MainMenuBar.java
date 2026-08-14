@@ -15,14 +15,14 @@ public class MainMenuBar extends JMenuBar {
 
         JMenu vaultMenu = new JMenu("Vault");
 
-        JMenuItem vaultNewItem = new JMenuItem("New");
-        JMenuItem vaultOpenItem = new JMenuItem("Open");
+        JMenuItem vaultNewItem = new JMenuItem("New...");
+        JMenuItem vaultOpenItem = new JMenuItem("Open...");
         JMenuItem vaultSaveItem = new JMenuItem("Save");
-        JMenuItem vaultSaveAsItem = new JMenuItem("Save As");
+        JMenuItem vaultSaveAsItem = new JMenuItem("Save As...");
         JMenuItem vaultCloseItem = new JMenuItem("Close");
         JMenuItem vaultUndoItem = new JMenuItem("Undo");
         JMenuItem vaultRedoItem = new JMenuItem("Redo");
-        JMenuItem vaultExitItem = new JMenuItem("Exit");
+        JMenuItem vaultExitItem = new JMenuItem("Exit Neurosync");
 
         vaultSaveItem.setEnabled(false);
         vaultSaveAsItem.setEnabled(false);
@@ -32,10 +32,12 @@ public class MainMenuBar extends JMenuBar {
         vaultRedoItem.setEnabled(false);
 
         vaultNewItem.addActionListener(e -> {
+            // Select directory before creation
             controller.newVault();
         });
 
         vaultCloseItem.addActionListener(e -> {
+           // Check for dirty and confirm
            controller.closeVault();
         });
 
@@ -51,11 +53,11 @@ public class MainMenuBar extends JMenuBar {
         vaultExitItem.addActionListener(e -> {
             if(model.isVaultDirty()) {
                 int response = JOptionPane.showConfirmDialog(frame,
-                        "Vault not saved. Exit without saving?",
+                        "Vault has unsaved changes. Exit anyway?",
                         "Select an Option",
-                        JOptionPane.OK_CANCEL_OPTION);
+                        JOptionPane.YES_NO_OPTION);
 
-                if(response == JOptionPane.OK_OPTION) {
+                if(response == JOptionPane.YES_OPTION) {
                     System.exit(0);
                 }
             } else {
@@ -73,7 +75,6 @@ public class MainMenuBar extends JMenuBar {
         vaultMenu.add(vaultRedoItem);
         vaultMenu.addSeparator();
         vaultMenu.add(vaultExitItem);
-
 
         // Shard Menu
 
@@ -93,6 +94,9 @@ public class MainMenuBar extends JMenuBar {
         shardMenu.addSeparator();
         shardMenu.add(shardPurgeItem);
 
+        shardNewItem.addActionListener(e -> {
+            controller.newShard();
+        });
 
         // Signal Jack Menu
 

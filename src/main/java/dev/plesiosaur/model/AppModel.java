@@ -12,8 +12,11 @@ public class AppModel {
 
     private boolean isVaultOpen = false;
     private boolean isVaultDirty = false;
+    private final ShardList shardList;
 
-    public AppModel() { }
+    public AppModel() {
+        this.shardList = new ShardList();
+    }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
@@ -41,5 +44,9 @@ public class AppModel {
         boolean previous = isVaultDirty;
         isVaultDirty = vaultDirty;
         propertyChangeSupport.firePropertyChange(VAULT_DIRTY, previous, isVaultDirty);
+    }
+
+    public ShardList getShardList() {
+        return shardList;
     }
 }
