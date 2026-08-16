@@ -28,8 +28,14 @@ public class AppController {
     }
 
     public void newShard() {
+        model.setVaultDirty(true);
         Shard s = new Shard();
         model.getShardList().addShard(s);
+    }
+
+    public void markShard(Shard s, boolean marked) {
+        model.setVaultDirty(true);
+        s.setMarked(marked);
     }
 
 }

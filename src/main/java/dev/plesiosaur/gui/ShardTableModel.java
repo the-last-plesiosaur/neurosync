@@ -1,5 +1,6 @@
 package dev.plesiosaur.gui;
 
+import dev.plesiosaur.AppController;
 import dev.plesiosaur.model.ShardList;
 
 import javax.swing.table.AbstractTableModel;
@@ -31,10 +32,12 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a");
 
     private final ShardList shardList;
+    private final AppController appController;
 
-    public ShardTableModel(ShardList shardList) {
+    public ShardTableModel(ShardList shardList, AppController appController) {
         this.shardList = shardList;
         this.shardList.addPropertyChangeListener(this);
+        this.appController = appController;
     }
 
     @Override
@@ -82,6 +85,31 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
             default -> throw new IllegalArgumentException("Column " + columnIndex + " not found");
         };
 
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        if(rowIndex >= shardList.getShards().size()) {
+            throw new IllegalArgumentException("Row index out of bounds");
+        }
+
+        if(columnIndex == 3) { return true; }
+
+        return false;
+    }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        if(rowIndex >= shardList.getShards().size()) {
+            throw new IllegalArgumentException("Row index out of bounds");
+        }
+
+        if(columnIndex == 3) {
+            Boolean b =  (Boolean) aValue;
+            appController.markShard(shardList.getShards().get(rowIndex), b);
+        } else {
+            throw new IllegalArgumentException("Column " + columnIndex + " not editable");
+        };
     }
 
     @Override

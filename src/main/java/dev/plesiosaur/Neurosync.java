@@ -26,19 +26,19 @@ public class Neurosync {
         MainMenuBar mmb = new  MainMenuBar(frame, model, controller);
         frame.setJMenuBar(mmb);
 
-        JPanel shardPanel = shardTable(model);
+        JPanel shardPanel = shardTable(model, controller);
         frame.getContentPane().add(shardPanel);
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    private static JPanel shardTable(AppModel model) {
+    private static JPanel shardTable(AppModel model, AppController controller) {
         JPanel shards = new JPanel();
         shards.setLayout(new BorderLayout(5, 5));
         shards.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-        ShardTableModel stm = new ShardTableModel(model.getShardList());
+        ShardTableModel stm = new ShardTableModel(model.getShardList(), controller);
 
         JTable table = new JTable(stm);
 
