@@ -93,7 +93,9 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
             throw new IllegalArgumentException("Row index out of bounds");
         }
 
-        if(columnIndex == 3) { return true; }
+        if(columnIndex == 3 || columnIndex == 1) {
+            return true;
+        }
 
         return false;
     }
@@ -107,7 +109,11 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
         if(columnIndex == 3) {
             Boolean b =  (Boolean) aValue;
             appController.markShard(shardList.getShards().get(rowIndex), b);
-        } else {
+        } else if(columnIndex == 1) {
+            String s = (String) aValue;
+            appController.rekeyShard(shardList.getShards().get(rowIndex), s);
+        }
+        else {
             throw new IllegalArgumentException("Column " + columnIndex + " not editable");
         };
     }

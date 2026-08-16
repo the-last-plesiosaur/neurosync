@@ -38,4 +38,9 @@ public class AppController {
         s.setMarked(marked);
     }
 
+    public void rekeyShard(Shard s, String newKey) {
+        model.setVaultDirty(true);
+        s.setKey(newKey);
+    }
+
 }
