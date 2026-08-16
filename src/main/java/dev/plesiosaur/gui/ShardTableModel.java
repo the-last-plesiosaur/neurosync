@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.format.DateTimeFormatter;
 
 public class ShardTableModel extends AbstractTableModel implements PropertyChangeListener {
 
@@ -26,6 +27,8 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
             String.class,
             Boolean.class
     };
+
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a");
 
     private final ShardList shardList;
 
@@ -74,7 +77,7 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
         return switch (columnIndex) {
             case 0 -> shardList.getShards().get(rowIndex).getId();
             case 1 -> shardList.getShards().get(rowIndex).getKey();
-            case 2 -> shardList.getShards().get(rowIndex).getCreated().toString();
+            case 2 -> shardList.getShards().get(rowIndex).getCreated().format(formatter);
             case 3 -> shardList.getShards().get(rowIndex).isMarked();
             default -> throw new IllegalArgumentException("Column " + columnIndex + " not found");
         };
