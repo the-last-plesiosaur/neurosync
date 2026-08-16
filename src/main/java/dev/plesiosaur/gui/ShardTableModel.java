@@ -3,8 +3,15 @@ package dev.plesiosaur.gui;
 import dev.plesiosaur.model.ShardList;
 
 import javax.swing.table.AbstractTableModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class ShardTableModel extends AbstractTableModel {
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+public class ShardTableModel extends AbstractTableModel implements PropertyChangeListener {
+
+    private static final Logger log = LoggerFactory.getLogger(ShardTableModel.class);
 
     private static final String[] columns = {
             "Id",
@@ -24,6 +31,7 @@ public class ShardTableModel extends AbstractTableModel {
 
     public ShardTableModel(ShardList shardList) {
         this.shardList = shardList;
+        this.shardList.addPropertyChangeListener(this);
     }
 
     @Override
@@ -71,5 +79,11 @@ public class ShardTableModel extends AbstractTableModel {
             default -> throw new IllegalArgumentException("Column " + columnIndex + " not found");
         };
 
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+         log.info("Changed property received");
+         fireTableDataChanged();
     }
 }
