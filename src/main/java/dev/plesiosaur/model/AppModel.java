@@ -1,5 +1,7 @@
 package dev.plesiosaur.model;
 
+import dev.plesiosaur.controller.CommandStack;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -13,9 +15,11 @@ public class AppModel {
     private boolean isVaultOpen = false;
     private boolean isVaultDirty = false;
     private final ShardList shardList;
+    private final CommandStack commandStack;
 
     public AppModel() {
         this.shardList = new ShardList();
+        this.commandStack = new CommandStack();
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -24,6 +28,10 @@ public class AppModel {
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+
+    public CommandStack getCommandStack() {
+        return commandStack;
     }
 
     public boolean isVaultOpen() {

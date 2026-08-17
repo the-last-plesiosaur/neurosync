@@ -1,6 +1,7 @@
 package dev.plesiosaur;
 
 
+import dev.plesiosaur.controller.AppController;
 import dev.plesiosaur.gui.MainMenuBar;
 import dev.plesiosaur.gui.ShardTableModel;
 import dev.plesiosaur.model.AppModel;

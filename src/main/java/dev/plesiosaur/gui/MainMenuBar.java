@@ -1,6 +1,6 @@
 package dev.plesiosaur.gui;
 
-import dev.plesiosaur.AppController;
+import dev.plesiosaur.controller.AppController;
 import dev.plesiosaur.model.AppModel;
 
 import javax.swing.*;
@@ -30,6 +30,19 @@ public class MainMenuBar extends JMenuBar {
 
         vaultUndoItem.setEnabled(false);
         vaultRedoItem.setEnabled(false);
+
+        vaultUndoItem.addActionListener(e -> {
+           model.getCommandStack().undo();
+        });
+
+        vaultRedoItem.addActionListener(e -> {
+            model.getCommandStack().redo();
+        });
+
+        model.getCommandStack().addObserver(cs -> {
+            vaultUndoItem.setEnabled(cs.hasUndoCommands());
+            vaultRedoItem.setEnabled(cs.hasRedoCommands());
+        });
 
         vaultNewItem.addActionListener(e -> {
             // Select directory before creation

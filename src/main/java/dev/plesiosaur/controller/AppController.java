@@ -1,4 +1,4 @@
-package dev.plesiosaur;
+package dev.plesiosaur.controller;
 
 import dev.plesiosaur.model.AppModel;
 import dev.plesiosaur.model.Shard;
@@ -34,8 +34,9 @@ public class AppController {
     }
 
     public void markShard(Shard s, boolean marked) {
-        model.setVaultDirty(true);
-        s.setMarked(marked);
+        CmdMarkShard cmdMarkShard = new CmdMarkShard(s, marked);
+        model.getCommandStack().execute(cmdMarkShard);
+        //s.setMarked(marked);
     }
 
     public void rekeyShard(Shard s, String newKey) {

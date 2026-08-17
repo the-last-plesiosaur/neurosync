@@ -1,6 +1,6 @@
 package dev.plesiosaur.gui;
 
-import dev.plesiosaur.AppController;
+import dev.plesiosaur.controller.AppController;
 import dev.plesiosaur.model.ShardList;
 
 import javax.swing.table.AbstractTableModel;
