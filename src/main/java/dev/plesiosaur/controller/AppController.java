@@ -36,12 +36,12 @@ public class AppController {
     public void markShard(Shard s, boolean marked) {
         CmdMarkShard cmdMarkShard = new CmdMarkShard(s, marked);
         model.getCommandStack().execute(cmdMarkShard);
-        //s.setMarked(marked);
     }
 
     public void rekeyShard(Shard s, String newKey) {
-        model.setVaultDirty(true);
-        s.setKey(newKey);
+        //model.setVaultDirty(true);
+        CmdRekeyShard cmdRekeyShard = new CmdRekeyShard(s, newKey);
+        model.getCommandStack().execute(cmdRekeyShard);
     }
 
 }
