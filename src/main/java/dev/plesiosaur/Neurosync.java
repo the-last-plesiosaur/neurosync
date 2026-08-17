@@ -90,15 +90,10 @@ public class Neurosync {
     private static JPopupMenu tableMenu() {
         JPopupMenu menu = new JPopupMenu();
 
-        JMenuItem rekeyShard = new JMenuItem("Rekey");
         JMenuItem freezeShard = new JMenuItem("Freeze");
-        JMenuItem flagShard = new JMenuItem("Flag");
         JMenuItem purgeShard = new JMenuItem("Purge");
 
-        menu.add(rekeyShard);
         menu.add(freezeShard);
-        menu.add(flagShard);
-        menu.addSeparator();
         menu.add(purgeShard);
 
         return menu;
