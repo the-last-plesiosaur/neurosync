@@ -111,6 +111,26 @@ public class MainMenuBar extends JMenuBar {
             controller.newShard();
         });
 
+        shardPurgeItem.addActionListener(e -> {
+           JPanel panel = new JPanel();
+           panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+           panel.add(new JLabel("Shard Key:"));
+           JTextField keyField = new JTextField();
+           panel.add(keyField);
+
+           int result = JOptionPane.showConfirmDialog(
+                   frame,
+                   panel,
+                   "Shards to Purge",
+                   JOptionPane.OK_CANCEL_OPTION,
+                   JOptionPane.PLAIN_MESSAGE
+           );
+
+           if(result == JOptionPane.OK_OPTION) {
+               controller.purgeShardsByKey(keyField.getText());
+           }
+        });
+
         // Signal Jack Menu
 
         JMenu jackMenu = new JMenu("Signal Jack");

@@ -3,6 +3,8 @@ package dev.plesiosaur.controller;
 import dev.plesiosaur.model.AppModel;
 import dev.plesiosaur.model.Shard;
 
+import java.util.List;
+
 public class AppController {
 
     private final AppModel model;
@@ -43,6 +45,17 @@ public class AppController {
         //model.setVaultDirty(true);
         CmdRekeyShard cmdRekeyShard = new CmdRekeyShard(s, newKey);
         model.getCommandStack().execute(cmdRekeyShard);
+    }
+
+    public void purgeShardsByKey(String key) {
+        List<Shard> shardsToPurge = model.getShardList()
+                                        .getShards()
+                                        .stream()
+                                        .filter(s -> s.getKey().equals(key))
+                                        .toList();
+
+        CmdPurgeShard cmdPurgeShard = new CmdPurgeShard(model.getShardList(), shardsToPurge);
+        model.getCommandStack().execute(cmdPurgeShard);
     }
 
 }
