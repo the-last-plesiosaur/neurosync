@@ -28,12 +28,13 @@ public class AppController {
     }
 
     public void newShard() {
-        model.setVaultDirty(true);
-        Shard s = new Shard();
-        model.getShardList().addShard(s);
+        //model.setVaultDirty(true);
+        CmdNewShard cmdNewShard = new CmdNewShard(model.getShardList());
+        model.getCommandStack().execute(cmdNewShard);
     }
 
     public void markShard(Shard s, boolean marked) {
+        //model.setVaultDirty(true);
         CmdMarkShard cmdMarkShard = new CmdMarkShard(s, marked);
         model.getCommandStack().execute(cmdMarkShard);
     }
