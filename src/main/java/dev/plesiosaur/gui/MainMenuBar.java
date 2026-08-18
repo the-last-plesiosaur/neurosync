@@ -30,6 +30,9 @@ public class MainMenuBar extends JMenuBar {
         vaultSaveAsItem.setEnabled(false);
         vaultCloseItem.setEnabled(false);
 
+        vaultSaveItem.addActionListener(e -> { showNotImplementedError(frame); });
+        vaultSaveAsItem.addActionListener(e -> { showNotImplementedError(frame); });
+
         vaultUndoItem.setEnabled(false);
         vaultRedoItem.setEnabled(false);
 
@@ -113,7 +116,6 @@ public class MainMenuBar extends JMenuBar {
             controller.newShard();
         });
 
-
         shardRekeyItem.addActionListener(e -> {
            JPanel panel = new JPanel();
            panel.setLayout(new GridLayout(2, 2, 5, 5));
@@ -138,6 +140,10 @@ public class MainMenuBar extends JMenuBar {
             if(result == JOptionPane.OK_OPTION) {
                 controller.rekeyShardsByKey(keyField.getSelectedItem().toString(), newKeyField.getText());
             }
+        });
+
+        shardImportItem.addActionListener(e -> {
+            showNotImplementedError(frame);
         });
 
         shardPurgeItem.addActionListener(e -> {
@@ -177,6 +183,11 @@ public class MainMenuBar extends JMenuBar {
         jackMenu.add(signalJackByKey);
         jackMenu.add(signalJackAll);
 
+        signalJackQueued.addActionListener(e -> { showNotImplementedError(frame); });
+        signalJackQueuedByKey.addActionListener(e -> { showNotImplementedError(frame); });
+        signalJackByKey.addActionListener(e -> { showNotImplementedError(frame); });
+        signalJackAll.addActionListener(e -> { showNotImplementedError(frame); });
+
         // Add all menus to bar
 
         this.add(vaultMenu);
@@ -200,8 +211,15 @@ public class MainMenuBar extends JMenuBar {
               vaultCloseItem.setEnabled(false);
           }
         });
+    }
 
-
+    private void showNotImplementedError(JFrame frame) {
+         JOptionPane.showMessageDialog(
+                 frame,
+                 "This feature not implemented yet",
+                 "Not Implemented",
+                 JOptionPane.ERROR_MESSAGE
+         );
 
     }
 
