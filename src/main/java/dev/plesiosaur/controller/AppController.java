@@ -4,6 +4,7 @@ import dev.plesiosaur.model.AppModel;
 import dev.plesiosaur.model.Shard;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AppController {
 
@@ -44,6 +45,16 @@ public class AppController {
     public void rekeyShard(Shard s, String newKey) {
         //model.setVaultDirty(true);
         CmdRekeyShard cmdRekeyShard = new CmdRekeyShard(s, newKey);
+        model.getCommandStack().execute(cmdRekeyShard);
+    }
+
+    public void rekeyShardsByKey(String oldKey, String newKey) {
+        List<Shard> shardsToRekey = model.getShardList().getShards().stream()
+                .filter(s -> s.getKey() != null)
+                .filter(s -> s.getKey().equals(oldKey))
+                .toList();
+
+        CmdRekeyShard cmdRekeyShard = new CmdRekeyShard(shardsToRekey, newKey);
         model.getCommandStack().execute(cmdRekeyShard);
     }
 

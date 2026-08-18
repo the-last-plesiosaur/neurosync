@@ -4,6 +4,7 @@ import dev.plesiosaur.controller.AppController;
 import dev.plesiosaur.model.AppModel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
 
@@ -110,6 +111,33 @@ public class MainMenuBar extends JMenuBar {
 
         shardNewItem.addActionListener(e -> {
             controller.newShard();
+        });
+
+
+        shardRekeyItem.addActionListener(e -> {
+           JPanel panel = new JPanel();
+           panel.setLayout(new GridLayout(2, 2, 5, 5));
+
+            panel.add(new JLabel("Shard Key:"));
+            String[] keyOptions = model.getShardList().getUniqueKeys().toArray(String[]::new);
+            JComboBox<String> keyField = new JComboBox<>(keyOptions);
+            panel.add(keyField);
+
+            panel.add(new JLabel("New Shard Key:"));
+            JTextField newKeyField = new JTextField();
+            panel.add(newKeyField);
+
+            int result = JOptionPane.showConfirmDialog(
+                    frame,
+                    panel,
+                    "Shards to Rekey",
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE
+            );
+
+            if(result == JOptionPane.OK_OPTION) {
+                controller.rekeyShardsByKey(keyField.getSelectedItem().toString(), newKeyField.getText());
+            }
         });
 
         shardPurgeItem.addActionListener(e -> {

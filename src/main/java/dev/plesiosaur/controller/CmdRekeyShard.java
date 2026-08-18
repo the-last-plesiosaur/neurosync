@@ -2,31 +2,47 @@ package dev.plesiosaur.controller;
 
 import dev.plesiosaur.model.Shard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CmdRekeyShard implements Command {
 
-    private final Shard s;
+    private final List<Shard> shardsToRekey;
     private final String newKey;
-    private String oldKey;
+    private final String oldKey;
 
     public CmdRekeyShard(Shard s, String newKey) {
-        this.s = s;
+        shardsToRekey = new ArrayList<>();
+        shardsToRekey.add(s);
         this.newKey = newKey;
+        this.oldKey = s.getKey();
+    }
+
+    public CmdRekeyShard(List<Shard> shards, String newKey) {
+        shardsToRekey = shards;
+        this.newKey = newKey;
+        this.oldKey = shardsToRekey.getFirst().getKey();
     }
 
     @Override
     public void execute() {
-        oldKey = s.getKey();
-        s.setKey(newKey);
+        for(Shard s : shardsToRekey) {
+            s.setKey(newKey);
+        }
     }
 
     @Override
     public void undo() {
-        s.setKey(oldKey);
+        for(Shard s : shardsToRekey) {
+            s.setKey(oldKey);
+        }
     }
 
     @Override
     public void redo() {
-        s.setKey(newKey);
+        for(Shard s : shardsToRekey) {
+            s.setKey(newKey);
+        }
     }
 
     @Override
