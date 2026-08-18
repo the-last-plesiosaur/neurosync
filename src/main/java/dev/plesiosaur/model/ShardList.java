@@ -3,9 +3,10 @@ package dev.plesiosaur.model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,16 @@ public class ShardList implements PropertyChangeListener {
 
     public ShardList() {
         shards = new ArrayList<>();
+    }
+
+    public List<String> getUniqueKeys() {
+        return this.shards.stream()
+                .map(Shard::getKey)
+                .filter(Objects::nonNull)
+                .filter(Predicate.not(String::isBlank))
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     public List<Shard> getShards() {

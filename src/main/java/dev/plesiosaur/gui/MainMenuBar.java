@@ -5,6 +5,7 @@ import dev.plesiosaur.model.AppModel;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.Arrays;
 
 public class MainMenuBar extends JMenuBar {
 
@@ -115,7 +116,9 @@ public class MainMenuBar extends JMenuBar {
            JPanel panel = new JPanel();
            panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
            panel.add(new JLabel("Shard Key:"));
-           JTextField keyField = new JTextField();
+
+           String[] keyOptions = model.getShardList().getUniqueKeys().toArray(String[]::new);
+           JComboBox<String> keyField = new JComboBox<>(keyOptions);
            panel.add(keyField);
 
            int result = JOptionPane.showConfirmDialog(
@@ -127,7 +130,7 @@ public class MainMenuBar extends JMenuBar {
            );
 
            if(result == JOptionPane.OK_OPTION) {
-               controller.purgeShardsByKey(keyField.getText());
+               controller.purgeShardsByKey(keyField.getSelectedItem().toString());
            }
         });
 
