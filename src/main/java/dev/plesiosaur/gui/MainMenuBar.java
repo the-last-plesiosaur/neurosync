@@ -40,8 +40,8 @@ public class MainMenuBar extends JMenuBar {
         });
 
         model.getCommandStack().addObserver(cs -> {
-            vaultUndoItem.setEnabled(cs.hasUndoCommands());
-            vaultRedoItem.setEnabled(cs.hasRedoCommands());
+            vaultUndoItem.setEnabled(cs.canUndo());
+            vaultRedoItem.setEnabled(cs.canRedo());
         });
 
         vaultNewItem.addActionListener(e -> {

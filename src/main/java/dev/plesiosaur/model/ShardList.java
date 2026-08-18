@@ -24,6 +24,22 @@ public class ShardList implements PropertyChangeListener {
         return Collections.unmodifiableList(shards);
     }
 
+    public void clearAndReplace(List<Shard> shards) {
+        List<Shard> old = List.copyOf(shards);
+
+        for(Shard s : this.shards) {
+            s.removePropertyChangeListener(this);
+        }
+        this.shards.clear();
+
+        for(Shard s : shards) {
+            s.addPropertyChangeListener(this);
+        }
+        this.shards.addAll(shards);
+
+        pcs.firePropertyChange("shards", old, shards);
+    }
+
     public void addShard(Shard shard) {
         List<Shard> old = List.copyOf(shards);
         shards.add(shard);

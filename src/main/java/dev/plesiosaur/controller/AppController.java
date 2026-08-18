@@ -51,6 +51,7 @@ public class AppController {
         List<Shard> shardsToPurge = model.getShardList()
                                         .getShards()
                                         .stream()
+                                        .filter(s -> s.getKey() != null)
                                         .filter(s -> s.getKey().equals(key))
                                         .toList();
 

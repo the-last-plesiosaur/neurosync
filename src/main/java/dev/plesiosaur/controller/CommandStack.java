@@ -28,11 +28,11 @@ public class CommandStack {
         }
     }
 
-    public boolean hasUndoCommands() {
+    public boolean canUndo() {
         return !undoCommands.isEmpty();
     }
 
-    public boolean hasRedoCommands() {
+    public boolean canRedo() {
         return !redoCommands.isEmpty();
     }
 
@@ -45,7 +45,7 @@ public class CommandStack {
     }
 
     public void undo() {
-        if(!hasUndoCommands()) throw new IllegalStateException("No commands are available to undo");
+        if(!canUndo()) throw new IllegalStateException("No commands are available to undo");
         Command c = undoCommands.removeLast();
         c.undo();
         redoCommands.add(c);
@@ -53,7 +53,7 @@ public class CommandStack {
     }
 
     public void redo() {
-        if(!hasRedoCommands()) throw new IllegalStateException("No commands are available to redo");
+        if(!canRedo()) throw new IllegalStateException("No commands are available to redo");
         Command c = redoCommands.removeLast();
         c.redo();
         undoCommands.add(c);
