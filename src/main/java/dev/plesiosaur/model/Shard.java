@@ -14,11 +14,13 @@ public class Shard {
     private String key;
     private ZonedDateTime nextJack;
     private boolean marked;
+    private boolean coldStorage;
 
     public Shard() {
         id = UUID.randomUUID();
         created = ZonedDateTime.now();
         marked = false;
+        coldStorage = false;
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -45,6 +47,16 @@ public class Shard {
         String old = this.key;
         this.key = key;
         pcs.firePropertyChange("key", old, key);
+    }
+
+    public boolean isColdStorage() {
+        return coldStorage;
+    }
+
+    public void setColdStorage(boolean coldStorage) {
+        boolean old = this.coldStorage;
+        this.coldStorage = coldStorage;
+        pcs.firePropertyChange("coldStorage", old, coldStorage);
     }
 
     public ZonedDateTime getNextJack() {

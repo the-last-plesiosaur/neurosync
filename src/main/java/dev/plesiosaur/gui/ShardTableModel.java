@@ -19,13 +19,15 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
             "Id",
             "Key",
             "Created",
-            "Marked"
+            "Marked",
+            "Cold Storage"
     };
 
     private static final Class<?>[] columnClasses = {
             String.class,
             String.class,
             String.class,
+            Boolean.class,
             Boolean.class
     };
 
@@ -82,6 +84,7 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
             case 1 -> shardList.getShards().get(rowIndex).getKey();
             case 2 -> shardList.getShards().get(rowIndex).getCreated().format(formatter);
             case 3 -> shardList.getShards().get(rowIndex).isMarked();
+            case 4 -> shardList.getShards().get(rowIndex).isColdStorage();
             default -> throw new IllegalArgumentException("Column " + columnIndex + " not found");
         };
 
@@ -93,7 +96,7 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
             throw new IllegalArgumentException("Row index out of bounds");
         }
 
-        if(columnIndex == 3 || columnIndex == 1) {
+        if(columnIndex == 3 || columnIndex == 1 || columnIndex == 4) {
             return true;
         }
 
@@ -112,6 +115,9 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
         } else if(columnIndex == 1) {
             String s = (String) aValue;
             appController.rekeyShard(shardList.getShards().get(rowIndex), s);
+        } else if(columnIndex == 4) {
+            Boolean b = (Boolean) aValue;
+            appController.freezeShard(shardList.getShards().get(rowIndex), b);
         }
         else {
             throw new IllegalArgumentException("Column " + columnIndex + " not editable");

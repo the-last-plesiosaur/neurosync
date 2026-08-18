@@ -42,6 +42,11 @@ public class AppController {
         model.getCommandStack().execute(cmdMarkShard);
     }
 
+    public void freezeShard(Shard s, boolean coldStorage) {
+        CmdFreezeShard cmdFreezeShard = new CmdFreezeShard(s, coldStorage);
+        model.getCommandStack().execute(cmdFreezeShard);
+    }
+
     public void rekeyShard(Shard s, String newKey) {
         //model.setVaultDirty(true);
         CmdRekeyShard cmdRekeyShard = new CmdRekeyShard(s, newKey);
