@@ -1,6 +1,7 @@
 package dev.plesiosaur.gui;
 
 import dev.plesiosaur.controller.AppController;
+import dev.plesiosaur.model.Shard;
 import dev.plesiosaur.model.ShardList;
 
 import javax.swing.table.AbstractTableModel;
@@ -40,6 +41,10 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
         this.shardList = shardList;
         this.shardList.addPropertyChangeListener(this);
         this.appController = appController;
+    }
+
+    public Shard getShardAt(int idx) {
+        return shardList.getShards().get(idx);
     }
 
     @Override

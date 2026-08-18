@@ -75,4 +75,9 @@ public class AppController {
         model.getCommandStack().execute(cmdPurgeShard);
     }
 
+    public void purgeShard(Shard shard) {
+        CmdPurgeShard cmdPurgeShard = new CmdPurgeShard(model.getShardList(), shard);
+        model.getCommandStack().execute(cmdPurgeShard);
+    }
+
 }

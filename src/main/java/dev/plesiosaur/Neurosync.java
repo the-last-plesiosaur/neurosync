@@ -5,6 +5,7 @@ import dev.plesiosaur.controller.AppController;
 import dev.plesiosaur.gui.MainMenuBar;
 import dev.plesiosaur.gui.ShardTableModel;
 import dev.plesiosaur.model.AppModel;
+import dev.plesiosaur.model.Shard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,7 +52,7 @@ public class Neurosync {
         table.setAutoCreateRowSorter(true);
 
 
-        JPopupMenu popup = tableMenu();
+        //JPopupMenu popup = tableMenu();
 
         table.addMouseListener(new MouseAdapter() {
             @Override
@@ -71,7 +72,18 @@ public class Neurosync {
                             source.changeSelection(row, column, false, false);
                         }
 
-                        popup.show(source, e.getX(), e.getY());
+                        int modelRow = source.convertRowIndexToModel(row);
+                        Shard targetShard = stm.getShardAt(modelRow);
+
+                        JPopupMenu menu = new JPopupMenu();
+                        JMenuItem purgeShard = new JMenuItem("Purge");
+                        menu.add(purgeShard);
+
+                        purgeShard.addActionListener(evt -> {
+                            controller.purgeShard(targetShard);
+                        });
+
+                        menu.show(source, e.getX(), e.getY());
                     }
                 }
             }
@@ -85,18 +97,4 @@ public class Neurosync {
 
         return shards;
     }
-
-
-    private static JPopupMenu tableMenu() {
-        JPopupMenu menu = new JPopupMenu();
-
-        JMenuItem freezeShard = new JMenuItem("Freeze");
-        JMenuItem purgeShard = new JMenuItem("Purge");
-
-        menu.add(freezeShard);
-        menu.add(purgeShard);
-
-        return menu;
-    }
-
 }

@@ -18,6 +18,12 @@ public class CmdPurgeShard implements Command {
         this.shardsToRemove = List.copyOf(shards);
     }
 
+    public CmdPurgeShard(ShardList shardList, Shard shard) {
+        this.shardList = shardList;
+        this.shardsToRemove = new ArrayList<>();
+        this.shardsToRemove.add(shard);
+    }
+
     @Override
     public void execute() {
         shardsBeforeRemoval = List.copyOf(shardList.getShards());
