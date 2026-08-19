@@ -3,6 +3,7 @@ package dev.plesiosaur.controller;
 import dev.plesiosaur.model.Shard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CmdRekeyShard implements Command {
@@ -22,6 +23,18 @@ public class CmdRekeyShard implements Command {
         shardsToRekey = shards;
         this.newKey = newKey;
         this.oldKey = shardsToRekey.getFirst().getKey();
+    }
+
+    public String getNewKey() {
+        return newKey;
+    }
+
+    public String getOldKey() {
+        return oldKey;
+    }
+
+    public List<Shard> getShardsToRekey() {
+        return Collections.unmodifiableList(shardsToRekey);
     }
 
     @Override
