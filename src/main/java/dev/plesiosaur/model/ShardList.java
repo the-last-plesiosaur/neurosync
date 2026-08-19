@@ -35,6 +35,12 @@ public class ShardList implements PropertyChangeListener {
         return Collections.unmodifiableList(shards);
     }
 
+    public List<Shard> withKey(String key) {
+        return shards.stream()
+                .filter(s -> s.hasKey(key))
+                .collect(Collectors.toList());
+    }
+
     public void clearAndReplace(List<Shard> shards) {
         List<Shard> old = List.copyOf(shards);
 

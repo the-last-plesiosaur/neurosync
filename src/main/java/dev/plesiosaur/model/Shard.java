@@ -49,6 +49,10 @@ public class Shard {
         pcs.firePropertyChange("key", old, key);
     }
 
+    public boolean hasKey(String key) {
+        return this.key != null && this.key.equals(key);
+    }
+
     public boolean isColdStorage() {
         return coldStorage;
     }
