@@ -3,6 +3,7 @@ package dev.plesiosaur;
 
 import dev.plesiosaur.controller.AppController;
 import dev.plesiosaur.gui.MainMenuBar;
+import dev.plesiosaur.gui.MainStatusPanel;
 import dev.plesiosaur.gui.ShardTableModel;
 import dev.plesiosaur.model.AppModel;
 import dev.plesiosaur.model.Shard;
@@ -37,15 +38,9 @@ public class Neurosync {
         JPanel shardPanel = shardTable(model, controller);
         frame.getContentPane().add(shardPanel, BorderLayout.CENTER);
 
-        JPanel statusPanel = new JPanel();
-        statusPanel.setPreferredSize(new Dimension(APP_WIDTH, 25));
-        statusPanel.setBorder(BorderFactory.createEmptyBorder(0, 8, 8, 8));
-        statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+        MainStatusPanel msp = new MainStatusPanel(model);
 
-        JLabel statusLabel = new JLabel("Vault: <None>");
-        statusPanel.add(statusLabel);
-
-        frame.getContentPane().add(statusPanel, BorderLayout.SOUTH);
+        frame.getContentPane().add(msp, BorderLayout.SOUTH);
 
 
         frame.setLocationRelativeTo(null);
