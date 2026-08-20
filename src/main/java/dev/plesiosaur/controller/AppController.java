@@ -54,8 +54,7 @@ public class AppController {
 
     public void rekeyShardsByKey(String oldKey, String newKey) {
         List<Shard> shardsToRekey = model.getShardList().getShards().stream()
-                .filter(s -> s.getKey() != null)
-                .filter(s -> s.getKey().equals(oldKey))
+                .filter(s -> s.hasKey(oldKey))
                 .toList();
 
         CmdRekeyShard cmdRekeyShard = new CmdRekeyShard(shardsToRekey, newKey);
