@@ -8,11 +8,17 @@ import dev.plesiosaur.model.AppModel;
 import dev.plesiosaur.model.Shard;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Neurosync {
+
+    private static final int APP_WIDTH = 1000;
+    private static final int APP_HEIGHT = 800;
+
     static void main() {
         SwingUtilities.invokeLater(Neurosync::showGui);
     }
@@ -23,13 +29,26 @@ public class Neurosync {
 
         JFrame frame = new JFrame("Neurosync");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 800);
+        frame.setSize(APP_WIDTH, APP_HEIGHT);
 
         MainMenuBar mmb = new  MainMenuBar(frame, model, controller);
         frame.setJMenuBar(mmb);
 
+        frame.getContentPane().setLayout(new BorderLayout());
+
         JPanel shardPanel = shardTable(model, controller);
-        frame.getContentPane().add(shardPanel);
+        frame.getContentPane().add(shardPanel, BorderLayout.CENTER);
+
+        JPanel statusPanel = new JPanel();
+        statusPanel.setPreferredSize(new Dimension(APP_WIDTH, 25));
+        statusPanel.setBorder(BorderFactory.createEmptyBorder(0, 8, 8, 8));
+        statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+
+        JLabel statusLabel = new JLabel("Vault: <None>");
+        statusPanel.add(statusLabel);
+
+        frame.getContentPane().add(statusPanel, BorderLayout.SOUTH);
+
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
