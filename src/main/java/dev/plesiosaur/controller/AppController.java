@@ -15,18 +15,16 @@ public class AppController {
     }
 
     public void newVault() {
-        model.setVaultOpen(true);
-        model.setVaultDirty(true);
+        model.newVault();
     }
 
     public void closeVault() {
-        model.setVaultOpen(false);
-        model.setVaultDirty(false);
+        model.closeVault();
     }
 
     public void openVault(String fileName) {
-        model.setVaultOpen(true);
-        model.setVaultDirty(false);
+        //model.setVaultOpen(true);
+        //model.setVaultDirty(false);
     }
 
     public void newShard() {

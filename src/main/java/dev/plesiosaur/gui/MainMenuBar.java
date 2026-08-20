@@ -2,6 +2,8 @@ package dev.plesiosaur.gui;
 
 import dev.plesiosaur.controller.AppController;
 import dev.plesiosaur.model.AppModel;
+import dev.plesiosaur.model.AppModelObserver;
+import dev.plesiosaur.model.Vault;
 
 import javax.swing.*;
 import java.awt.*;
@@ -69,6 +71,7 @@ public class MainMenuBar extends JMenuBar {
         });
 
         vaultExitItem.addActionListener(e -> {
+            /*
             if(model.isVaultDirty()) {
                 int response = JOptionPane.showConfirmDialog(frame,
                         "Vault has unsaved changes. Exit anyway?",
@@ -81,6 +84,9 @@ public class MainMenuBar extends JMenuBar {
             } else {
                 System.exit(0);
             }
+             */
+
+            System.exit(0);
         });
 
         vaultMenu.add(vaultNewItem);
@@ -195,21 +201,24 @@ public class MainMenuBar extends JMenuBar {
         this.add(jackMenu);
 
         // AppModel property changes
+        model.addObserver(new AppModelObserver() {
+            @Override
+            public void vaultOpened(Vault vault) {
+                shardMenu.setEnabled(true);
+                jackMenu.setEnabled(true);
+                vaultSaveItem.setEnabled(true);
+                vaultSaveAsItem.setEnabled(true);
+                vaultCloseItem.setEnabled(true);
+            }
 
-        model.addPropertyChangeListener(e -> {
-          if(e.getPropertyName().equals(AppModel.VAULT_OPEN) && e.getNewValue().equals(true)) {
-              shardMenu.setEnabled(true);
-              jackMenu.setEnabled(true);
-              vaultSaveItem.setEnabled(true);
-              vaultSaveAsItem.setEnabled(true);
-              vaultCloseItem.setEnabled(true);
-          } else if (e.getPropertyName().equals(AppModel.VAULT_OPEN) && e.getNewValue().equals(false)) {
-              shardMenu.setEnabled(false);
-              jackMenu.setEnabled(false);
-              vaultSaveItem.setEnabled(false);
-              vaultSaveAsItem.setEnabled(false);
-              vaultCloseItem.setEnabled(false);
-          }
+            @Override
+            public void vaultClosed(Vault vault) {
+                shardMenu.setEnabled(false);
+                jackMenu.setEnabled(false);
+                vaultSaveItem.setEnabled(false);
+                vaultSaveAsItem.setEnabled(false);
+                vaultCloseItem.setEnabled(false);
+            }
         });
     }
 

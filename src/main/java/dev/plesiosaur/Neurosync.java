@@ -8,8 +8,6 @@ import dev.plesiosaur.model.AppModel;
 import dev.plesiosaur.model.Shard;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
