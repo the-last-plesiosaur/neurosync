@@ -28,8 +28,7 @@ public class AppController {
     }
 
     public void newShard() {
-        //model.setVaultDirty(true);
-        CmdNewShard cmdNewShard = new CmdNewShard(model.getVault().getShardList());
+        CmdNewShard cmdNewShard = new CmdNewShard(model.getVault());
         model.getCommandStack().execute(cmdNewShard);
     }
 
