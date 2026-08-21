@@ -127,7 +127,7 @@ public class MainMenuBar extends JMenuBar {
            panel.setLayout(new GridLayout(2, 2, 5, 5));
 
             panel.add(new JLabel("Shard Key:"));
-            String[] keyOptions = model.getShardList().getUniqueKeys().toArray(String[]::new);
+            String[] keyOptions = model.getVault().getShardList().getUniqueKeys().toArray(String[]::new);
             JComboBox<String> keyField = new JComboBox<>(keyOptions);
             panel.add(keyField);
 
@@ -157,7 +157,7 @@ public class MainMenuBar extends JMenuBar {
            panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
            panel.add(new JLabel("Shard Key:"));
 
-           String[] keyOptions = model.getShardList().getUniqueKeys().toArray(String[]::new);
+           String[] keyOptions = model.getVault().getShardList().getUniqueKeys().toArray(String[]::new);
            JComboBox<String> keyField = new JComboBox<>(keyOptions);
            panel.add(keyField);
 

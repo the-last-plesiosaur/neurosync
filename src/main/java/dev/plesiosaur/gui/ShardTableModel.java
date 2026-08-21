@@ -1,8 +1,7 @@
 package dev.plesiosaur.gui;
 
 import dev.plesiosaur.controller.AppController;
-import dev.plesiosaur.model.Shard;
-import dev.plesiosaur.model.ShardList;
+import dev.plesiosaur.model.*;
 
 import javax.swing.table.AbstractTableModel;
 import org.slf4j.Logger;
@@ -12,7 +11,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.format.DateTimeFormatter;
 
-public class ShardTableModel extends AbstractTableModel implements PropertyChangeListener {
+public class ShardTableModel extends AbstractTableModel implements AppModelObserver, VaultObserver, PropertyChangeListener {
 
     private static final Logger log = LoggerFactory.getLogger(ShardTableModel.class);
 
@@ -34,22 +33,25 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a");
 
-    private final ShardList shardList;
+    private final AppModel model;
     private final AppController appController;
 
-    public ShardTableModel(ShardList shardList, AppController appController) {
-        this.shardList = shardList;
-        this.shardList.addPropertyChangeListener(this);
+    public ShardTableModel(AppModel model, AppController appController) {
+        this.model = model;
         this.appController = appController;
+
+        this.model.addObserver(this);
+        if(this.model.hasVault()) {
+            this.model.getVault().addVaultObserver(this);
+            this.model.getVault().getShardList().addPropertyChangeListener(this);
+        }
     }
 
     public Shard getShardAt(int idx) {
-        return shardList.getShards().get(idx);
-    }
-
-    @Override
-    public int getRowCount() {
-        return shardList.getShards().size();
+        if(!model.hasVault()) {
+            throw new IllegalArgumentException("No open vault");
+        }
+        return model.getVault().getShardList().getShards().get(idx);
     }
 
     @Override
@@ -79,7 +81,22 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
     }
 
     @Override
+    public int getRowCount() {
+        if(model.hasVault()) {
+            return model.getVault().getShardList().getShards().size();
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        if(!model.hasVault()) {
+            throw new IllegalArgumentException("No open vault");
+        }
+
+        ShardList shardList = model.getVault().getShardList();
+
         if(rowIndex >= shardList.getShards().size()) {
             throw new IllegalArgumentException("Row index out of bounds");
         }
@@ -92,11 +109,16 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
             case 4 -> shardList.getShards().get(rowIndex).isColdStorage();
             default -> throw new IllegalArgumentException("Column " + columnIndex + " not found");
         };
-
     }
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
+        if(!model.hasVault()) {
+            throw new IllegalArgumentException("No open vault");
+        }
+
+        ShardList shardList = model.getVault().getShardList();
+
         if(rowIndex >= shardList.getShards().size()) {
             throw new IllegalArgumentException("Row index out of bounds");
         }
@@ -110,6 +132,12 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        if(!model.hasVault()) {
+            throw new IllegalArgumentException("No open vault");
+        }
+
+        ShardList shardList = model.getVault().getShardList();
+
         if(rowIndex >= shardList.getShards().size()) {
             throw new IllegalArgumentException("Row index out of bounds");
         }
@@ -133,5 +161,29 @@ public class ShardTableModel extends AbstractTableModel implements PropertyChang
     public void propertyChange(PropertyChangeEvent evt) {
          log.info("Changed property received");
          fireTableDataChanged();
+    }
+
+    @Override
+    public void vaultOpened(Vault vault) {
+        vault.addVaultObserver(this);
+        vault.getShardList().addPropertyChangeListener(this);
+        fireTableDataChanged();
+    }
+
+    @Override
+    public void vaultClosed(Vault vault) {
+        vault.removeVaultObserver(this);
+        vault.getShardList().removePropertyChangeListener(this);
+        fireTableDataChanged();
+    }
+
+    @Override
+    public void dirtyChange(Vault v) {
+
+    }
+
+    @Override
+    public void fileNameChange(Vault v) {
+
     }
 }

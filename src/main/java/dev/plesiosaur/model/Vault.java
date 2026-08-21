@@ -12,12 +12,14 @@ public class Vault {
 
     private boolean dirty;
     private String fileName;
+    private ShardList shardList;
 
     private List<VaultObserver> observers = new ArrayList<>();
 
     public Vault() {
         id = UUID.randomUUID();
         created = ZonedDateTime.now();
+        shardList = new ShardList();
         dirty = false;
         fileName = null;
     }
@@ -36,6 +38,11 @@ public class Vault {
 
     public ZonedDateTime getCreated() {
         return created;
+    }
+
+
+    public ShardList getShardList() {
+        return shardList;
     }
 
     public boolean isDirty() {

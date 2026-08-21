@@ -29,7 +29,7 @@ public class AppController {
 
     public void newShard() {
         //model.setVaultDirty(true);
-        CmdNewShard cmdNewShard = new CmdNewShard(model.getShardList());
+        CmdNewShard cmdNewShard = new CmdNewShard(model.getVault().getShardList());
         model.getCommandStack().execute(cmdNewShard);
     }
 
@@ -51,7 +51,7 @@ public class AppController {
     }
 
     public void rekeyShardsByKey(String oldKey, String newKey) {
-        List<Shard> shardsToRekey = model.getShardList().getShards().stream()
+        List<Shard> shardsToRekey = model.getVault().getShardList().getShards().stream()
                 .filter(s -> s.hasKey(oldKey))
                 .toList();
 
@@ -60,19 +60,19 @@ public class AppController {
     }
 
     public void purgeShardsByKey(String key) {
-        List<Shard> shardsToPurge = model.getShardList()
+        List<Shard> shardsToPurge = model.getVault().getShardList()
                                         .getShards()
                                         .stream()
                                         .filter(s -> s.getKey() != null)
                                         .filter(s -> s.getKey().equals(key))
                                         .toList();
 
-        CmdPurgeShard cmdPurgeShard = new CmdPurgeShard(model.getShardList(), shardsToPurge);
+        CmdPurgeShard cmdPurgeShard = new CmdPurgeShard(model.getVault().getShardList(), shardsToPurge);
         model.getCommandStack().execute(cmdPurgeShard);
     }
 
     public void purgeShard(Shard shard) {
-        CmdPurgeShard cmdPurgeShard = new CmdPurgeShard(model.getShardList(), shard);
+        CmdPurgeShard cmdPurgeShard = new CmdPurgeShard(model.getVault().getShardList(), shard);
         model.getCommandStack().execute(cmdPurgeShard);
     }
 

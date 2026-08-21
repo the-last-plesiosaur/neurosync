@@ -52,7 +52,7 @@ public class Neurosync {
         shards.setLayout(new BorderLayout(5, 5));
         shards.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
-        ShardTableModel stm = new ShardTableModel(model.getShardList(), controller);
+        ShardTableModel stm = new ShardTableModel(model, controller);
 
         JTable table = new JTable(stm);
 

@@ -8,14 +8,11 @@ import java.util.List;
 public class AppModel {
 
     private Vault vault;
-
-    private final ShardList shardList;
     private final CommandStack commandStack;
 
     private final List<AppModelObserver> observers = new ArrayList<>();
 
     public AppModel() {
-        this.shardList = new ShardList();
         this.commandStack = new CommandStack();
     }
 
@@ -33,8 +30,9 @@ public class AppModel {
     }
 
     public void closeVault() {
-        fireVaultClosed(vault);
+        Vault old = vault;
         vault = null;
+        fireVaultClosed(old);
     }
 
     public void addObserver(AppModelObserver observer) {
@@ -61,8 +59,11 @@ public class AppModel {
         return commandStack;
     }
 
+    public boolean hasVault() {
+        return vault != null;
+    }
 
-    public ShardList getShardList() {
-        return shardList;
+    public Vault getVault() {
+        return vault;
     }
 }
