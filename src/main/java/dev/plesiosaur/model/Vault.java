@@ -14,11 +14,6 @@ public class Vault {
     private String fileName;
 
     private List<VaultObserver> observers = new ArrayList<>();
-    private enum VaultEvent  {
-        DIRTY,
-        FILENAME
-    };
-
 
     public Vault() {
         id = UUID.randomUUID();
@@ -35,16 +30,6 @@ public class Vault {
         observers.remove(observer);
     }
 
-    private void notifyObservers(VaultEvent e) {
-       for (VaultObserver observer : observers) {
-           switch (e) {
-               case DIRTY -> observer.dirtyChange(this);
-               case FILENAME -> observer.fileNameChange(this);
-               default -> throw new IllegalStateException("Unexpected value: " + e);
-           }
-       }
-    }
-
     public UUID getId() {
         return id;
     }
@@ -59,7 +44,9 @@ public class Vault {
 
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
-        notifyObservers(VaultEvent.DIRTY);
+        for(VaultObserver observer : observers) {
+            observer.dirtyChange(this);
+        }
     }
 
     public String getFileName() {
@@ -72,6 +59,8 @@ public class Vault {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
-        notifyObservers(VaultEvent.FILENAME);
+        for(VaultObserver observer : observers) {
+            observer.fileNameChange(this);
+        }
     }
 }
