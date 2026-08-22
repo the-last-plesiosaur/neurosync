@@ -206,6 +206,8 @@ public class MainMenuBar extends JMenuBar {
             public void vaultOpened(Vault vault) {
                 shardMenu.setEnabled(true);
                 jackMenu.setEnabled(true);
+                vaultNewItem.setEnabled(false);
+                vaultOpenItem.setEnabled(false);
                 vaultSaveItem.setEnabled(true);
                 vaultSaveAsItem.setEnabled(true);
                 vaultCloseItem.setEnabled(true);
@@ -215,6 +217,8 @@ public class MainMenuBar extends JMenuBar {
             public void vaultClosed(Vault vault) {
                 shardMenu.setEnabled(false);
                 jackMenu.setEnabled(false);
+                vaultNewItem.setEnabled(true);
+                vaultOpenItem.setEnabled(true);
                 vaultSaveItem.setEnabled(false);
                 vaultSaveAsItem.setEnabled(false);
                 vaultCloseItem.setEnabled(false);
