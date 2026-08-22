@@ -7,11 +7,9 @@ import javax.swing.table.AbstractTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.time.format.DateTimeFormatter;
 
-public class ShardTableModel extends AbstractTableModel implements AppModelObserver, VaultObserver, PropertyChangeListener {
+public class ShardTableModel extends AbstractTableModel implements AppModelObserver, VaultObserver, ShardListObserver {
 
     private static final Logger log = LoggerFactory.getLogger(ShardTableModel.class);
 
@@ -43,7 +41,7 @@ public class ShardTableModel extends AbstractTableModel implements AppModelObser
         this.model.addObserver(this);
         if(this.model.hasVault()) {
             this.model.getVault().addVaultObserver(this);
-            this.model.getVault().getShardList().addPropertyChangeListener(this);
+            this.model.getVault().getShardList().addShardListObserver(this);
         }
     }
 
@@ -158,22 +156,16 @@ public class ShardTableModel extends AbstractTableModel implements AppModelObser
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-         log.info("Changed property received");
-         fireTableDataChanged();
-    }
-
-    @Override
     public void vaultOpened(Vault vault) {
         vault.addVaultObserver(this);
-        vault.getShardList().addPropertyChangeListener(this);
+        vault.getShardList().addShardListObserver(this);
         fireTableDataChanged();
     }
 
     @Override
     public void vaultClosed(Vault vault) {
         vault.removeVaultObserver(this);
-        vault.getShardList().removePropertyChangeListener(this);
+        vault.getShardList().removeShardListObserver(this);
         fireTableDataChanged();
     }
 
@@ -185,5 +177,11 @@ public class ShardTableModel extends AbstractTableModel implements AppModelObser
     @Override
     public void fileNameChange(Vault v) {
 
+    }
+
+    @Override
+    public void shardListChanged(ShardList shardList) {
+        log.info("Changed property received");
+        fireTableDataChanged();
     }
 }

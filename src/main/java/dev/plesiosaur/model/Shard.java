@@ -3,18 +3,20 @@ package dev.plesiosaur.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Shard {
-
-    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
     private final UUID id;
     private final ZonedDateTime created;
     private String key;
     private ZonedDateTime nextJack;
     private boolean marked;
     private boolean coldStorage;
+
+    private final List<ShardObserver> observers = new ArrayList<>();
 
     public Shard() {
         id = UUID.randomUUID();
@@ -23,12 +25,18 @@ public class Shard {
         coldStorage = false;
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        pcs.addPropertyChangeListener(listener);
+    public void addShardObserver(ShardObserver observer) {
+        observers.add(observer);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        pcs.removePropertyChangeListener(listener);
+    public void removeShardObserver(ShardObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for (ShardObserver observer : observers) {
+            observer.shardChanged(this);
+        }
     }
 
     public UUID getId() {
@@ -44,13 +52,14 @@ public class Shard {
     }
 
     public void setKey(String key) {
-        String old = this.key;
-        this.key = key;
-        pcs.firePropertyChange("key", old, key);
+        if(!Objects.equals(this.key, key)) {
+            this.key = key;
+            notifyObservers();
+        }
     }
 
     public boolean hasKey(String key) {
-        return this.key != null && this.key.equals(key);
+        return Objects.equals(this.key, key);
     }
 
     public boolean isColdStorage() {
@@ -58,9 +67,10 @@ public class Shard {
     }
 
     public void setColdStorage(boolean coldStorage) {
-        boolean old = this.coldStorage;
-        this.coldStorage = coldStorage;
-        pcs.firePropertyChange("coldStorage", old, coldStorage);
+        if(this.coldStorage != coldStorage) {
+            this.coldStorage = coldStorage;
+            notifyObservers();
+        }
     }
 
     public ZonedDateTime getNextJack() {
@@ -68,9 +78,10 @@ public class Shard {
     }
 
     public void setNextJack(ZonedDateTime nextJack) {
-        ZonedDateTime old = this.nextJack;
-        this.nextJack = nextJack;
-        pcs.firePropertyChange("nextJack", old, nextJack);
+        if(!Objects.equals(this.nextJack, nextJack)) {
+            this.nextJack = nextJack;
+            notifyObservers();
+        }
     }
 
     public boolean isMarked() {
@@ -78,8 +89,9 @@ public class Shard {
     }
 
     public void setMarked(boolean marked) {
-        boolean old = this.marked;
-        this.marked = marked;
-        pcs.firePropertyChange("marked", old, marked);
+        if(marked != this.marked) {
+            this.marked = marked;
+            notifyObservers();
+        }
     }
 }

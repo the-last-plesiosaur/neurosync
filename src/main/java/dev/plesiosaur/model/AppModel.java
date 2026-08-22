@@ -17,10 +17,6 @@ public class AppModel {
     }
 
     public void newVault() {
-        if(vault != null) {
-            // close vault
-        }
-
         vault = new Vault();
         fireVaultOpened(vault);
     }

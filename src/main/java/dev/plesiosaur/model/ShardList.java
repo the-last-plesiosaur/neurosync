@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ShardList implements PropertyChangeListener {
+public class ShardList implements ShardObserver {
 
     private static final Logger log = LoggerFactory.getLogger(ShardList.class);
-    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
+    private final List<ShardListObserver> observers = new ArrayList<>();
     private final List<Shard> shards;
 
     public ShardList() {
@@ -42,46 +42,50 @@ public class ShardList implements PropertyChangeListener {
     }
 
     public void clearAndReplace(List<Shard> shards) {
-        List<Shard> old = List.copyOf(shards);
-
         for(Shard s : this.shards) {
-            s.removePropertyChangeListener(this);
+            s.removeShardObserver(this);
         }
         this.shards.clear();
 
         for(Shard s : shards) {
-            s.addPropertyChangeListener(this);
+            s.addShardObserver(this);
         }
         this.shards.addAll(shards);
 
-        pcs.firePropertyChange("shards", old, shards);
+        notifyObservers();
     }
 
     public void addShard(Shard shard) {
-        List<Shard> old = List.copyOf(shards);
         shards.add(shard);
-        shard.addPropertyChangeListener(this);
-        pcs.firePropertyChange("shards", old, shards);
+        shard.addShardObserver(this);
+        notifyObservers();
+
     }
 
     public void removeShard(Shard shard) {
-        List<Shard> old = List.copyOf(shards);
         shards.remove(shard);
-        shard.removePropertyChangeListener(this);
-        pcs.firePropertyChange("shards", old, shards);
+        shard.removeShardObserver(this);
+        notifyObservers();
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        pcs.addPropertyChangeListener(listener);
+    public void addShardListObserver(ShardListObserver observer) {
+        observers.add(observer);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        pcs.removePropertyChangeListener(listener);
+    public void removeShardListObserver(ShardListObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for(ShardListObserver observer : observers) {
+            observer.shardListChanged(this);
+        }
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        // Bubble changes to the shards up to our listeners
-        pcs.firePropertyChange(evt);
+    public void shardChanged(Shard shard) {
+        // Bubble changes from the shards up to our listeners
+        notifyObservers();
+
     }
 }

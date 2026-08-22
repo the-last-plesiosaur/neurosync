@@ -23,8 +23,7 @@ public class AppController {
     }
 
     public void openVault(String fileName) {
-        //model.setVaultOpen(true);
-        //model.setVaultDirty(false);
+
     }
 
     public void newShard() {
@@ -33,23 +32,25 @@ public class AppController {
     }
 
     public void markShard(Shard s, boolean marked) {
-        //model.setVaultDirty(true);
+        // Needs dirty tracking
         CmdMarkShard cmdMarkShard = new CmdMarkShard(s, marked);
         model.getCommandStack().execute(cmdMarkShard);
     }
 
     public void freezeShard(Shard s, boolean coldStorage) {
+        // Needs dirty tracking
         CmdFreezeShard cmdFreezeShard = new CmdFreezeShard(s, coldStorage);
         model.getCommandStack().execute(cmdFreezeShard);
     }
 
     public void rekeyShard(Shard s, String newKey) {
-        //model.setVaultDirty(true);
+        // Needs dirty tracking
         CmdRekeyShard cmdRekeyShard = new CmdRekeyShard(s, newKey);
         model.getCommandStack().execute(cmdRekeyShard);
     }
 
     public void rekeyShardsByKey(String oldKey, String newKey) {
+        // Needs dirty tracking
         List<Shard> shardsToRekey = model.getVault().getShardList().getShards().stream()
                 .filter(s -> s.hasKey(oldKey))
                 .toList();
@@ -59,6 +60,7 @@ public class AppController {
     }
 
     public void purgeShardsByKey(String key) {
+        // Needs dirty tracking
         List<Shard> shardsToPurge = model.getVault().getShardList()
                                         .getShards()
                                         .stream()
@@ -71,6 +73,7 @@ public class AppController {
     }
 
     public void purgeShard(Shard shard) {
+        // Needs dirty tracking
         CmdPurgeShard cmdPurgeShard = new CmdPurgeShard(model.getVault().getShardList(), shard);
         model.getCommandStack().execute(cmdPurgeShard);
     }
