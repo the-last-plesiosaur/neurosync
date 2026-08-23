@@ -1,6 +1,6 @@
 package dev.plesiosaur.model;
 
-import dev.plesiosaur.controller.CommandStack;
+import dev.plesiosaur.controller.CommandHistory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +8,12 @@ import java.util.List;
 public class AppModel {
 
     private Vault vault;
-    private final CommandStack commandStack;
+    private final CommandHistory commandHistory;
 
     private final List<AppModelObserver> observers = new ArrayList<>();
 
     public AppModel() {
-        this.commandStack = new CommandStack();
+        this.commandHistory = new CommandHistory();
     }
 
     public void newVault() {
@@ -51,8 +51,8 @@ public class AppModel {
         }
     }
 
-    public CommandStack getCommandStack() {
-        return commandStack;
+    public CommandHistory getCommandStack() {
+        return commandHistory;
     }
 
     public boolean hasVault() {

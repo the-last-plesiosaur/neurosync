@@ -2,28 +2,28 @@ package dev.plesiosaur.controller;
 
 import java.util.ArrayList;
 
-public class CommandStack {
+public class CommandHistory {
 
     private final ArrayList<Command> undoCommands;
     private final ArrayList<Command> redoCommands;
-    private final ArrayList<CommandStackObserver> observers;
+    private final ArrayList<CommandHistoryObserver> observers;
 
-    public CommandStack() {
+    public CommandHistory() {
         undoCommands = new ArrayList<>();
         redoCommands = new ArrayList<>();
         observers = new ArrayList<>();
     }
 
-    public void addObserver(CommandStackObserver observer) {
+    public void addObserver(CommandHistoryObserver observer) {
         observers.add(observer);
     }
 
-    public void removeObserver(CommandStackObserver observer) {
+    public void removeObserver(CommandHistoryObserver observer) {
         observers.remove(observer);
     }
 
     private void notifyObservers() {
-        for (CommandStackObserver observer : observers) {
+        for (CommandHistoryObserver observer : observers) {
             observer.commandStackChanged(this);
         }
     }

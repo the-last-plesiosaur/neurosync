@@ -3,7 +3,6 @@ package dev.plesiosaur.controller;
 import dev.plesiosaur.model.AppModel;
 import dev.plesiosaur.model.Shard;
 import dev.plesiosaur.model.ShardList;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -25,7 +24,7 @@ public class AppControllerTest {
     private AppModel model;
 
     @Mock
-    private CommandStack  commandStack;
+    private CommandHistory commandHistory;
 
     @InjectMocks
     private AppController controller;
@@ -53,12 +52,12 @@ public class AppControllerTest {
         shardList.addShard(s3);
         shardList.addShard(s4);
 
-        when(model.getShardList()).thenReturn(shardList);
-        when(model.getCommandStack()).thenReturn(commandStack);
+        when(model.getVault().getShardList()).thenReturn(shardList);
+        when(model.getCommandStack()).thenReturn(commandHistory);
 
         controller.rekeyShardsByKey("Dog", "Wolf");
 
-        verify(commandStack).execute(rekeyCaptor.capture());
+        verify(commandHistory).execute(rekeyCaptor.capture());
 
         CmdRekeyShard cmdRekeyShard = rekeyCaptor.getValue();
         assertEquals("Dog", cmdRekeyShard.getOldKey());
