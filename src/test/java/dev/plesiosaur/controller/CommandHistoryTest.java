@@ -73,8 +73,62 @@ public class CommandHistoryTest {
         commandHistory.undo();
         commandHistory.redo();
 
-        verify(mock).undo();
+        verify(mock).redo();
+    }
 
+    @Test
+    void isNotDirtyWhenEmpty() {
+        CommandHistory commandHistory = new CommandHistory();
+
+        assertFalse(commandHistory.isDirty());
+    }
+
+    @Test
+    void isDirtyAfterCommand() {
+        CommandHistory commandHistory = new CommandHistory();
+        Command mock = mock(Command.class);
+        commandHistory.execute(mock);
+        assertTrue(commandHistory.isDirty());
+    }
+
+    @Test
+    void isNotDirtyAfterUndo() {
+        CommandHistory commandHistory = new CommandHistory();
+        Command mock = mock(Command.class);
+        commandHistory.execute(mock);
+        commandHistory.undo();
+        assertFalse(commandHistory.isDirty());
+    }
+
+    @Test
+    void isDirtyAfterRedo() {
+        CommandHistory commandHistory = new CommandHistory();
+        Command mock = mock(Command.class);
+        commandHistory.execute(mock);
+        commandHistory.undo();
+        commandHistory.redo();
+        assertTrue(commandHistory.isDirty());
+    }
+
+    @Test
+    void markSavedClearsDirty() {
+        CommandHistory commandHistory = new CommandHistory();
+        Command mock = mock(Command.class);
+        commandHistory.execute(mock);
+        commandHistory.markSaved();
+
+        assertFalse(commandHistory.isDirty());
+    }
+
+    @Test
+    void undoAfterMarkSavedIsDirty() {
+        CommandHistory commandHistory = new CommandHistory();
+        Command mock = mock(Command.class);
+        commandHistory.execute(mock);
+        commandHistory.markSaved();
+        commandHistory.undo();
+
+        assertTrue(commandHistory.isDirty());
     }
 
 }
