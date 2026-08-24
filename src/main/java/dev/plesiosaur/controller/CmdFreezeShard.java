@@ -29,8 +29,4 @@ public class CmdFreezeShard implements Command {
         shard.setColdStorage(b);
     }
 
-    @Override
-    public boolean isUndoable() {
-        return true;
-    }
 }

@@ -25,7 +25,6 @@ public class CommandHistoryTest {
         CommandHistory commandHistory = new CommandHistory();
 
         Command mock = mock(Command.class);
-        when(mock.isUndoable()).thenReturn(true);
 
         commandHistory.execute(mock);
         verify(mock).execute();
@@ -36,7 +35,6 @@ public class CommandHistoryTest {
         CommandHistory commandHistory = new CommandHistory();
 
         Command mock = mock(Command.class);
-        when(mock.isUndoable()).thenReturn(true);
 
         commandHistory.execute(mock);
         assertTrue(commandHistory.canUndo());
@@ -47,7 +45,6 @@ public class CommandHistoryTest {
         CommandHistory commandHistory = new CommandHistory();
 
         Command mock = mock(Command.class);
-        when(mock.isUndoable()).thenReturn(true);
 
         commandHistory.execute(mock);
         commandHistory.undo();
@@ -60,7 +57,6 @@ public class CommandHistoryTest {
         CommandHistory commandHistory = new CommandHistory();
 
         Command mock = mock(Command.class);
-        when(mock.isUndoable()).thenReturn(true);
 
         commandHistory.execute(mock);
         commandHistory.undo();
@@ -72,7 +68,6 @@ public class CommandHistoryTest {
     void commandRedoCalled() {
         CommandHistory commandHistory = new CommandHistory();
         Command mock = mock(Command.class);
-        when(mock.isUndoable()).thenReturn(true);
 
         commandHistory.execute(mock);
         commandHistory.undo();

@@ -58,8 +58,4 @@ public class CmdRekeyShard implements Command {
         }
     }
 
-    @Override
-    public boolean isUndoable() {
-        return true;
-    }
 }

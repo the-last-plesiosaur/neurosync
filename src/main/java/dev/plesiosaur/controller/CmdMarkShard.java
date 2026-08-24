@@ -29,8 +29,4 @@ public class CmdMarkShard implements Command {
         shard.setMarked(b);
     }
 
-    @Override
-    public boolean isUndoable() {
-        return true;
-    }
 }

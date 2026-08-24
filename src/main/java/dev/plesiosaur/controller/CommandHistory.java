@@ -1,16 +1,19 @@
 package dev.plesiosaur.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommandHistory {
 
-    private final ArrayList<Command> undoCommands;
-    private final ArrayList<Command> redoCommands;
+    private final List<Command> commands;
     private final ArrayList<CommandHistoryObserver> observers;
 
+    private int position = 0;
+    private int savedPosition = 0;
+
+
     public CommandHistory() {
-        undoCommands = new ArrayList<>();
-        redoCommands = new ArrayList<>();
+        commands = new ArrayList<>();
         observers = new ArrayList<>();
     }
 
@@ -29,34 +32,52 @@ public class CommandHistory {
     }
 
     public boolean canUndo() {
-        return !undoCommands.isEmpty();
+        return position != 0;
     }
 
     public boolean canRedo() {
-        return !redoCommands.isEmpty();
+        return position < commands.size();
     }
 
     public void execute(Command command) {
-        command.execute();
-        if(command.isUndoable()) {
-            undoCommands.add(command);
-            notifyObservers();
+
+        if(position < commands.size()) {
+            // We've undone commands, executing something new creates a new history branch
+            // Important: if the saved state is in the discarded redo history, it is no longer
+            // reachable
+            if (savedPosition > position) {
+                savedPosition = -1;
+            }
+
         }
+
+        command.execute();
+        commands.add(command);
+        position++;
+
+        notifyObservers();
     }
 
     public void undo() {
         if(!canUndo()) throw new IllegalStateException("No commands are available to undo");
-        Command c = undoCommands.removeLast();
-        c.undo();
-        redoCommands.add(c);
+        commands.get(position - 1).undo();
+        position--;
         notifyObservers();
     }
 
     public void redo() {
         if(!canRedo()) throw new IllegalStateException("No commands are available to redo");
-        Command c = redoCommands.removeLast();
-        c.redo();
-        undoCommands.add(c);
+        commands.get(position).redo();
+        position++;
         notifyObservers();
     }
+
+    public boolean markSaved() {
+        return savedPosition == position;
+    }
+
+    public boolean isDirty() {
+        return savedPosition != position;
+    }
+
 }

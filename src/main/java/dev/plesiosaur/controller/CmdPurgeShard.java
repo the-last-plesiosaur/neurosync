@@ -44,8 +44,4 @@ public class CmdPurgeShard implements Command {
         }
     }
 
-    @Override
-    public boolean isUndoable() {
-        return true;
-    }
 }

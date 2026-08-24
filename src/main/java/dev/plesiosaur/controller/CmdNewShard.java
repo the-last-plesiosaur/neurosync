@@ -35,8 +35,4 @@ public class CmdNewShard implements Command {
         vault.setDirty(true);
     }
 
-    @Override
-    public boolean isUndoable() {
-        return true;
-    }
 }
