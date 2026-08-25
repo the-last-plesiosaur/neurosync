@@ -3,6 +3,7 @@ package dev.plesiosaur.controller;
 import dev.plesiosaur.model.NeurosyncDocument;
 import dev.plesiosaur.model.Shard;
 
+import java.io.File;
 import java.util.List;
 
 public class AppController {
@@ -23,6 +24,10 @@ public class AppController {
 
     public void openVault(String fileName) {
 
+    }
+
+    public void saveAsVault(File file) {
+        model.saveAsVault(file);
     }
 
     public void newShard() {

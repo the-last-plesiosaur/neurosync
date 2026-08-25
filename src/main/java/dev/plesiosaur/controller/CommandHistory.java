@@ -91,6 +91,7 @@ public class CommandHistory {
 
     public void markSaved() {
         savedRevision = currentRevision;
+        notifyObservers();
     }
 
     public boolean isDirty() {

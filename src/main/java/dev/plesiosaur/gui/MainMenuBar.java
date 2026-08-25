@@ -32,7 +32,6 @@ public class MainMenuBar extends JMenuBar {
         vaultCloseItem.setEnabled(false);
 
         vaultSaveItem.addActionListener(e -> { showNotImplementedError(frame); });
-        vaultSaveAsItem.addActionListener(e -> { showNotImplementedError(frame); });
 
         vaultUndoItem.setEnabled(false);
         vaultRedoItem.setEnabled(false);
@@ -59,6 +58,17 @@ public class MainMenuBar extends JMenuBar {
            // Check for dirty and confirm
            controller.closeVault();
         });
+
+
+        vaultSaveAsItem.addActionListener(e -> {
+           JFileChooser chooser = new JFileChooser();
+           int selection = chooser.showSaveDialog(frame);
+           if(selection == JFileChooser.APPROVE_OPTION) {
+               File file = chooser.getSelectedFile();
+               controller.saveAsVault(file);
+           }
+        });
+
 
         vaultOpenItem.addActionListener(e -> {
            JFileChooser chooser = new JFileChooser();
