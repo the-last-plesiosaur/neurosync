@@ -45,6 +45,12 @@ public class NeurosyncDocument {
         fireVaultSaved(vault);
     }
 
+    public void saveVault() {
+        persistenceEngine.saveAs(this.vault, this.file);
+        commandHistory.markSaved();
+        fireVaultSaved(vault);
+    }
+
     public void openVault() {
 
     }

@@ -11,7 +11,7 @@ import java.io.File;
 
 public class MainMenuBar extends JMenuBar {
 
-    public MainMenuBar(JFrame frame, NeurosyncDocument model, AppController controller) {
+    public MainMenuBar(JFrame frame, NeurosyncDocument document, AppController controller) {
         super();
 
         // Vault Menu
@@ -31,20 +31,18 @@ public class MainMenuBar extends JMenuBar {
         vaultSaveAsItem.setEnabled(false);
         vaultCloseItem.setEnabled(false);
 
-        vaultSaveItem.addActionListener(e -> { showNotImplementedError(frame); });
-
         vaultUndoItem.setEnabled(false);
         vaultRedoItem.setEnabled(false);
 
         vaultUndoItem.addActionListener(e -> {
-           model.getCommandStack().undo();
+           document.getCommandStack().undo();
         });
 
         vaultRedoItem.addActionListener(e -> {
-            model.getCommandStack().redo();
+            document.getCommandStack().redo();
         });
 
-        model.getCommandStack().addObserver(cs -> {
+        document.getCommandStack().addObserver(cs -> {
             vaultUndoItem.setEnabled(cs.canUndo());
             vaultRedoItem.setEnabled(cs.canRedo());
         });
@@ -69,6 +67,19 @@ public class MainMenuBar extends JMenuBar {
            }
         });
 
+        vaultSaveItem.addActionListener(e -> {
+            if(document.hasFileName()) {
+                controller.saveVault();
+            } else {
+                JFileChooser chooser = new JFileChooser();
+                int selection = chooser.showSaveDialog(frame);
+                if(selection == JFileChooser.APPROVE_OPTION) {
+                    File file = chooser.getSelectedFile();
+                    controller.saveAsVault(file);
+                }
+            }
+        });
+
 
         vaultOpenItem.addActionListener(e -> {
            JFileChooser chooser = new JFileChooser();
@@ -81,7 +92,7 @@ public class MainMenuBar extends JMenuBar {
 
         vaultExitItem.addActionListener(e -> {
             /*
-            if(model.isVaultDirty()) {
+            if(document.isVaultDirty()) {
                 int response = JOptionPane.showConfirmDialog(frame,
                         "Vault has unsaved changes. Exit anyway?",
                         "Select an Option",
@@ -136,7 +147,7 @@ public class MainMenuBar extends JMenuBar {
            panel.setLayout(new GridLayout(2, 2, 5, 5));
 
             panel.add(new JLabel("Shard Key:"));
-            String[] keyOptions = model.getVault().getShardList().getUniqueKeys().toArray(String[]::new);
+            String[] keyOptions = document.getVault().getShardList().getUniqueKeys().toArray(String[]::new);
             JComboBox<String> keyField = new JComboBox<>(keyOptions);
             panel.add(keyField);
 
@@ -166,7 +177,7 @@ public class MainMenuBar extends JMenuBar {
            panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
            panel.add(new JLabel("Shard Key:"));
 
-           String[] keyOptions = model.getVault().getShardList().getUniqueKeys().toArray(String[]::new);
+           String[] keyOptions = document.getVault().getShardList().getUniqueKeys().toArray(String[]::new);
            JComboBox<String> keyField = new JComboBox<>(keyOptions);
            panel.add(keyField);
 
@@ -210,7 +221,7 @@ public class MainMenuBar extends JMenuBar {
         this.add(jackMenu);
 
         // AppModel property changes
-        model.addObserver(new NeurosyncDocumentObserver() {
+        document.addObserver(new NeurosyncDocumentObserver() {
             @Override
             public void vaultOpened(NeurosyncDocument neurosyncDocument, Vault vault) {
                 shardMenu.setEnabled(true);

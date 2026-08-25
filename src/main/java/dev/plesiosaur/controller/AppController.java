@@ -26,6 +26,10 @@ public class AppController {
 
     }
 
+    public void saveVault() {
+        model.saveVault();
+    }
+
     public void saveAsVault(File file) {
         model.saveAsVault(file);
     }
