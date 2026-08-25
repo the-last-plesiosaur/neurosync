@@ -1,18 +1,17 @@
 package dev.plesiosaur.gui;
 
 import dev.plesiosaur.controller.AppController;
-import dev.plesiosaur.model.AppModel;
-import dev.plesiosaur.model.AppModelObserver;
+import dev.plesiosaur.model.NeurosyncDocument;
+import dev.plesiosaur.model.NeurosyncDocumentObserver;
 import dev.plesiosaur.model.Vault;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.Arrays;
 
 public class MainMenuBar extends JMenuBar {
 
-    public MainMenuBar(JFrame frame, AppModel model, AppController controller) {
+    public MainMenuBar(JFrame frame, NeurosyncDocument model, AppController controller) {
         super();
 
         // Vault Menu
@@ -201,7 +200,7 @@ public class MainMenuBar extends JMenuBar {
         this.add(jackMenu);
 
         // AppModel property changes
-        model.addObserver(new AppModelObserver() {
+        model.addObserver(new NeurosyncDocumentObserver() {
             @Override
             public void vaultOpened(Vault vault) {
                 shardMenu.setEnabled(true);

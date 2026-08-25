@@ -1,18 +1,18 @@
 package dev.plesiosaur.gui;
 
-import dev.plesiosaur.model.AppModel;
-import dev.plesiosaur.model.AppModelObserver;
+import dev.plesiosaur.model.NeurosyncDocument;
+import dev.plesiosaur.model.NeurosyncDocumentObserver;
 import dev.plesiosaur.model.Vault;
 import dev.plesiosaur.model.VaultObserver;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MainStatusPanel extends JPanel implements AppModelObserver, VaultObserver {
+public class MainStatusPanel extends JPanel implements NeurosyncDocumentObserver, VaultObserver {
 
     private final JLabel statusLabel;
 
-    public MainStatusPanel(AppModel m) {
+    public MainStatusPanel(NeurosyncDocument m) {
         super();
 
         m.addObserver(this);

@@ -5,14 +5,14 @@ import dev.plesiosaur.controller.CommandHistory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppModel {
+public class NeurosyncDocument {
 
     private Vault vault;
     private final CommandHistory commandHistory;
 
-    private final List<AppModelObserver> observers = new ArrayList<>();
+    private final List<NeurosyncDocumentObserver> observers = new ArrayList<>();
 
-    public AppModel() {
+    public NeurosyncDocument() {
         this.commandHistory = new CommandHistory();
     }
 
@@ -31,22 +31,22 @@ public class AppModel {
         fireVaultClosed(old);
     }
 
-    public void addObserver(AppModelObserver observer) {
+    public void addObserver(NeurosyncDocumentObserver observer) {
         observers.add(observer);
     }
 
-    public void removeObserver(AppModelObserver observer) {
+    public void removeObserver(NeurosyncDocumentObserver observer) {
         observers.remove(observer);
     }
 
     private void fireVaultOpened(Vault v) {
-        for (AppModelObserver observer : observers) {
+        for (NeurosyncDocumentObserver observer : observers) {
             observer.vaultOpened(v);
         }
     }
 
     private void fireVaultClosed(Vault v) {
-        for (AppModelObserver observer : observers) {
+        for (NeurosyncDocumentObserver observer : observers) {
             observer.vaultClosed(v);
         }
     }

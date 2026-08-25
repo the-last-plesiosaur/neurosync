@@ -5,7 +5,7 @@ import dev.plesiosaur.controller.AppController;
 import dev.plesiosaur.gui.MainMenuBar;
 import dev.plesiosaur.gui.MainStatusPanel;
 import dev.plesiosaur.gui.ShardTableModel;
-import dev.plesiosaur.model.AppModel;
+import dev.plesiosaur.model.NeurosyncDocument;
 import dev.plesiosaur.model.Shard;
 
 import javax.swing.*;
@@ -23,7 +23,7 @@ public class Neurosync {
     }
 
     private static void showGui() {
-        AppModel model = new AppModel();
+        NeurosyncDocument model = new NeurosyncDocument();
         AppController controller = new AppController(model);
 
         JFrame frame = new JFrame("Neurosync");
@@ -47,7 +47,7 @@ public class Neurosync {
         frame.setVisible(true);
     }
 
-    private static JPanel shardTable(AppModel model, AppController controller) {
+    private static JPanel shardTable(NeurosyncDocument model, AppController controller) {
         JPanel shards = new JPanel();
         shards.setLayout(new BorderLayout(5, 5));
         shards.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));

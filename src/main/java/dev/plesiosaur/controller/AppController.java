@@ -1,16 +1,15 @@
 package dev.plesiosaur.controller;
 
-import dev.plesiosaur.model.AppModel;
+import dev.plesiosaur.model.NeurosyncDocument;
 import dev.plesiosaur.model.Shard;
 
 import java.util.List;
-import java.util.Objects;
 
 public class AppController {
 
-    private final AppModel model;
+    private final NeurosyncDocument model;
 
-    public AppController(AppModel model) {
+    public AppController(NeurosyncDocument model) {
         this.model = model;
     }
 

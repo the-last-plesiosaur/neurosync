@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.format.DateTimeFormatter;
 
-public class ShardTableModel extends AbstractTableModel implements AppModelObserver, VaultObserver, ShardListObserver {
+public class ShardTableModel extends AbstractTableModel implements NeurosyncDocumentObserver, VaultObserver, ShardListObserver {
 
     private static final Logger log = LoggerFactory.getLogger(ShardTableModel.class);
 
@@ -31,10 +31,10 @@ public class ShardTableModel extends AbstractTableModel implements AppModelObser
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a");
 
-    private final AppModel model;
+    private final NeurosyncDocument model;
     private final AppController appController;
 
-    public ShardTableModel(AppModel model, AppController appController) {
+    public ShardTableModel(NeurosyncDocument model, AppController appController) {
         this.model = model;
         this.appController = appController;
 

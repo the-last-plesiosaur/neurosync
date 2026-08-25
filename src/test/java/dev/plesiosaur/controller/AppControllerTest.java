@@ -1,6 +1,6 @@
 package dev.plesiosaur.controller;
 
-import dev.plesiosaur.model.AppModel;
+import dev.plesiosaur.model.NeurosyncDocument;
 import dev.plesiosaur.model.Shard;
 import dev.plesiosaur.model.ShardList;
 import dev.plesiosaur.model.Vault;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class AppControllerTest {
 
     @Mock
-    private AppModel model;
+    private NeurosyncDocument model;
 
     @Mock
     private CommandHistory commandHistory;
