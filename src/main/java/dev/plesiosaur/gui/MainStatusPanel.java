@@ -1,5 +1,7 @@
 package dev.plesiosaur.gui;
 
+import dev.plesiosaur.controller.CommandHistory;
+import dev.plesiosaur.controller.CommandHistoryObserver;
 import dev.plesiosaur.model.NeurosyncDocument;
 import dev.plesiosaur.model.NeurosyncDocumentObserver;
 import dev.plesiosaur.model.Vault;
@@ -7,37 +9,42 @@ import dev.plesiosaur.model.VaultObserver;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
-public class MainStatusPanel extends JPanel implements NeurosyncDocumentObserver, VaultObserver {
+public class MainStatusPanel extends JPanel implements NeurosyncDocumentObserver, CommandHistoryObserver {
 
     private final JLabel statusLabel;
+    private final NeurosyncDocument document;
 
-    public MainStatusPanel(NeurosyncDocument m) {
+    public MainStatusPanel(NeurosyncDocument d) {
         super();
 
-        m.addObserver(this);
+        this.document = d;
+
+        d.addObserver(this);
+        d.getCommandStack().addObserver(this);
 
         setPreferredSize(new Dimension(1000, 25));
         setBorder(BorderFactory.createEmptyBorder(0, 8, 8, 8));
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-        statusLabel = new JLabel(generateMessage(null));
+        statusLabel = new JLabel(generateMessage(d));
         add(statusLabel);
     }
 
-    private String generateMessage(Vault v) {
+    private String generateMessage(NeurosyncDocument neurosyncDocument) {
         String s = "Vault: ";
 
-        if(v == null) {
+        if(neurosyncDocument.getVault() == null) {
             s += "<NONE>";
         } else {
-            if(v.hasFileName()) {
-                s += v.getFileName();
+            if(neurosyncDocument.hasFileName()) {
+                s += neurosyncDocument.getFileName();
             } else {
                 s+= "<NEW>";
             }
 
-            if(v.isDirty()) {
+            if(neurosyncDocument.isDirty()) {
                 s += " (dirty)";
             }
         }
@@ -46,24 +53,24 @@ public class MainStatusPanel extends JPanel implements NeurosyncDocumentObserver
     }
 
     @Override
-    public void vaultOpened(Vault vault) {
-        vault.addVaultObserver(this);
-        statusLabel.setText(generateMessage(vault));
+    public void vaultOpened(NeurosyncDocument neurosyncDocument, Vault vault) {
+        //vault.addVaultObserver(this);
+        statusLabel.setText(generateMessage(neurosyncDocument));
     }
 
     @Override
-    public void vaultClosed(Vault vault) {
-        vault.removeVaultObserver(this);
-        statusLabel.setText(generateMessage(null));
+    public void vaultClosed(NeurosyncDocument neurosyncDocument, Vault vault) {
+        //vault.removeVaultObserver(this);
+        statusLabel.setText(generateMessage(neurosyncDocument));
     }
 
     @Override
-    public void dirtyChange(Vault v) {
-        statusLabel.setText(generateMessage(v));
+    public void vaultSaved(NeurosyncDocument neurosyncDocument, Vault vault) {
+        statusLabel.setText(generateMessage(neurosyncDocument));
     }
 
     @Override
-    public void fileNameChange(Vault v) {
-        statusLabel.setText(generateMessage(v));
+    public void commandStackChanged(CommandHistory cs) {
+        statusLabel.setText(generateMessage(document));
     }
 }

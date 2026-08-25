@@ -156,26 +156,21 @@ public class ShardTableModel extends AbstractTableModel implements NeurosyncDocu
     }
 
     @Override
-    public void vaultOpened(Vault vault) {
+    public void vaultOpened(NeurosyncDocument neurosyncDocument, Vault vault) {
         vault.addVaultObserver(this);
         vault.getShardList().addShardListObserver(this);
         fireTableDataChanged();
     }
 
     @Override
-    public void vaultClosed(Vault vault) {
+    public void vaultClosed(NeurosyncDocument neurosyncDocument, Vault vault) {
         vault.removeVaultObserver(this);
         vault.getShardList().removeShardListObserver(this);
         fireTableDataChanged();
     }
 
     @Override
-    public void dirtyChange(Vault v) {
-
-    }
-
-    @Override
-    public void fileNameChange(Vault v) {
+    public void vaultSaved(NeurosyncDocument neurosyncDocument, Vault vault) {
 
     }
 

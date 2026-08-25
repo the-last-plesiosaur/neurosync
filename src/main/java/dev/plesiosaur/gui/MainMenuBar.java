@@ -212,7 +212,7 @@ public class MainMenuBar extends JMenuBar {
         // AppModel property changes
         model.addObserver(new NeurosyncDocumentObserver() {
             @Override
-            public void vaultOpened(Vault vault) {
+            public void vaultOpened(NeurosyncDocument neurosyncDocument, Vault vault) {
                 shardMenu.setEnabled(true);
                 jackMenu.setEnabled(true);
                 vaultNewItem.setEnabled(false);
@@ -223,7 +223,7 @@ public class MainMenuBar extends JMenuBar {
             }
 
             @Override
-            public void vaultClosed(Vault vault) {
+            public void vaultClosed(NeurosyncDocument neurosyncDocument, Vault vault) {
                 shardMenu.setEnabled(false);
                 jackMenu.setEnabled(false);
                 vaultNewItem.setEnabled(true);
@@ -232,6 +232,13 @@ public class MainMenuBar extends JMenuBar {
                 vaultSaveAsItem.setEnabled(false);
                 vaultCloseItem.setEnabled(false);
             }
+
+
+            @Override
+            public void vaultSaved(NeurosyncDocument neurosyncDocument, Vault vault) {
+                // noop
+            }
+
         });
     }
 

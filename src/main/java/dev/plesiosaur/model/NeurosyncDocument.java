@@ -10,6 +10,7 @@ import java.util.List;
 public class NeurosyncDocument {
 
     private Vault vault;
+    private File file;
     private final CommandHistory commandHistory;
     private final PersistenceEngine persistenceEngine;
 
@@ -20,6 +21,18 @@ public class NeurosyncDocument {
         this.persistenceEngine = new PersistenceEngine();
     }
 
+    public boolean hasFileName() {
+        return file != null;
+    }
+
+    public String getFileName() {
+        return file.getAbsolutePath();
+    }
+
+    public boolean isDirty() {
+        return commandHistory.isDirty();
+    }
+
     public void newVault() {
         vault = new Vault();
         fireVaultOpened(vault);
@@ -28,7 +41,8 @@ public class NeurosyncDocument {
     public void saveAsVault(File file) {
         persistenceEngine.saveAs(this.vault, file);
         commandHistory.markSaved();
-
+        this.file = file;
+        fireVaultSaved(vault);
     }
 
     public void openVault() {
@@ -51,13 +65,19 @@ public class NeurosyncDocument {
 
     private void fireVaultOpened(Vault v) {
         for (NeurosyncDocumentObserver observer : observers) {
-            observer.vaultOpened(v);
+            observer.vaultOpened(this, v);
         }
     }
 
     private void fireVaultClosed(Vault v) {
         for (NeurosyncDocumentObserver observer : observers) {
-            observer.vaultClosed(v);
+            observer.vaultClosed(this, v);
+        }
+    }
+
+    private void fireVaultSaved(Vault v) {
+        for (NeurosyncDocumentObserver observer : observers) {
+            observer.vaultSaved(this, v);
         }
     }
 
