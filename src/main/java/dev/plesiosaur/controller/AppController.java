@@ -22,8 +22,8 @@ public class AppController {
         model.closeVault();
     }
 
-    public void openVault(String fileName) {
-
+    public void openVault(File file) {
+        model.openVault(file);
     }
 
     public void saveVault() {

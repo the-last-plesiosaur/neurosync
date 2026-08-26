@@ -29,6 +29,16 @@ public class ShardRecord {
         this.coldStorage = shard.isColdStorage();
     }
 
+    public Shard toShard() {
+        Shard shard = new Shard(this.id, this.created);
+        shard.setKey(this.key);
+        shard.setNextJack(this.nextJack);
+        shard.setMarked(this.marked);
+        shard.setColdStorage(this.coldStorage);
+
+        return shard;
+    }
+
     public UUID getId() {
         return id;
     }

@@ -86,7 +86,7 @@ public class MainMenuBar extends JMenuBar {
             int selection = chooser.showOpenDialog(frame);
             if(selection == JFileChooser.APPROVE_OPTION) {
                 File file = chooser.getSelectedFile();
-                controller.openVault(file.getAbsolutePath());
+                controller.openVault(file);
             }
         });
 

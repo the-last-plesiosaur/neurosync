@@ -51,13 +51,15 @@ public class NeurosyncDocument {
         fireVaultSaved(vault);
     }
 
-    public void openVault() {
-
+    public void openVault(File file) {
+        vault = persistenceEngine.openVault(file);
+        fireVaultOpened(vault);
     }
 
     public void closeVault() {
         Vault old = vault;
         vault = null;
+        commandHistory.clear();
         fireVaultClosed(old);
     }
 

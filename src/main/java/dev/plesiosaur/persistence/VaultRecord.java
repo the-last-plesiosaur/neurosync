@@ -1,6 +1,7 @@
 package dev.plesiosaur.persistence;
 
 import dev.plesiosaur.model.Shard;
+import dev.plesiosaur.model.ShardList;
 import dev.plesiosaur.model.Vault;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlElementWrapper;
@@ -32,6 +33,14 @@ public class VaultRecord {
         for(Shard s : vault.getShardList().getShards()) {
             this.shards.add(new ShardRecord(s));
         }
+    }
+
+    public Vault toVault() {
+        Vault vault = new Vault(this.id, this.created);
+        for(ShardRecord sr : this.shards) {
+            vault.getShardList().addShard(sr.toShard());
+        }
+        return vault;
     }
 
     public UUID getId() {

@@ -21,11 +21,27 @@ public class PersistenceEngine {
 
     }
 
+    public Vault openVault(File file) {
+        VaultRecord vr = unmarshall(file);
+        return vr.toVault();
+    }
+
+    private VaultRecord unmarshall(File file) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(VaultRecord.class);
+            return (VaultRecord) jaxbContext.createUnmarshaller().unmarshal(file);
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void marshall(VaultRecord vaultRecord, File file) throws JAXBException {
         JAXBContext jaxbContext = JAXBContext.newInstance(VaultRecord.class);
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.marshal(vaultRecord, file);
     }
+
+
 
 }

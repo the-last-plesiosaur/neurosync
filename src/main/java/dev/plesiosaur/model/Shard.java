@@ -25,6 +25,11 @@ public class Shard {
         coldStorage = false;
     }
 
+    public Shard(UUID id, ZonedDateTime created) {
+        this.id = id;
+        this.created = created;
+    }
+
     public void addShardObserver(ShardObserver observer) {
         observers.add(observer);
     }

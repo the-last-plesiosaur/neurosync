@@ -23,6 +23,17 @@ public class CommandHistory {
         observers = new ArrayList<>();
     }
 
+    public void clear() {
+        history.clear();
+        position = 0;
+        nextRevision = 1;
+        currentRevision = 0;
+        savedRevision = 0;
+
+        notifyObservers();
+    }
+
+
     public void addObserver(CommandHistoryObserver observer) {
         observers.add(observer);
     }
