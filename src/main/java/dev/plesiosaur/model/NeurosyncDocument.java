@@ -53,6 +53,7 @@ public class NeurosyncDocument {
 
     public void openVault(File file) {
         vault = persistenceEngine.openVault(file);
+        this.file = file;
         fireVaultOpened(vault);
     }
 
@@ -60,6 +61,7 @@ public class NeurosyncDocument {
         Vault old = vault;
         vault = null;
         commandHistory.clear();
+        file = null;
         fireVaultClosed(old);
     }
 
