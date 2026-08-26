@@ -8,11 +8,13 @@ import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-@XmlType(propOrder = {"id", "created", "key", "nextJack", "marked", "coldStorage"})
+@XmlType(propOrder = {"id", "created", "key", "challengeText", "responseText", "nextJack", "marked", "coldStorage"})
 public class ShardRecord {
 
     private UUID id;
     private ZonedDateTime created;
+    private String challengeText;
+    private String responseText;
     private String key;
     private ZonedDateTime nextJack;
     private boolean marked;
@@ -23,6 +25,8 @@ public class ShardRecord {
     public ShardRecord(Shard shard) {
         this.id = shard.getId();
         this.created = shard.getCreated();
+        this.challengeText = shard.getChallengeText();
+        this.responseText = shard.getResponseText();
         this.key = shard.getKey();
         this.nextJack = shard.getNextJack();
         this.marked = shard.isMarked();
@@ -31,6 +35,8 @@ public class ShardRecord {
 
     public Shard toShard() {
         Shard shard = new Shard(this.id, this.created);
+        shard.setChallengeText(this.challengeText);
+        shard.setResponseText(this.responseText);
         shard.setKey(this.key);
         shard.setNextJack(this.nextJack);
         shard.setMarked(this.marked);
@@ -87,5 +93,21 @@ public class ShardRecord {
 
     public void setColdStorage(boolean coldStorage) {
         this.coldStorage = coldStorage;
+    }
+
+    public String getResponseText() {
+        return responseText;
+    }
+
+    public void setResponseText(String responseText) {
+        this.responseText = responseText;
+    }
+
+    public String getChallengeText() {
+        return challengeText;
+    }
+
+    public void setChallengeText(String challengeText) {
+        this.challengeText = challengeText;
     }
 }

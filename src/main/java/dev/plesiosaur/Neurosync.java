@@ -4,6 +4,7 @@ package dev.plesiosaur;
 import dev.plesiosaur.controller.AppController;
 import dev.plesiosaur.gui.MainMenuBar;
 import dev.plesiosaur.gui.MainStatusPanel;
+import dev.plesiosaur.gui.ShardEditWindow;
 import dev.plesiosaur.gui.ShardTableModel;
 import dev.plesiosaur.model.NeurosyncDocument;
 import dev.plesiosaur.model.Shard;
@@ -35,7 +36,7 @@ public class Neurosync {
 
         frame.getContentPane().setLayout(new BorderLayout());
 
-        JPanel shardPanel = shardTable(model, controller);
+        JPanel shardPanel = shardTable(model, controller, frame);
         frame.getContentPane().add(shardPanel, BorderLayout.CENTER);
 
         MainStatusPanel msp = new MainStatusPanel(model);
@@ -47,7 +48,7 @@ public class Neurosync {
         frame.setVisible(true);
     }
 
-    private static JPanel shardTable(NeurosyncDocument model, AppController controller) {
+    private static JPanel shardTable(NeurosyncDocument model, AppController controller, JFrame frame) {
         JPanel shards = new JPanel();
         shards.setLayout(new BorderLayout(5, 5));
         shards.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
@@ -88,11 +89,18 @@ public class Neurosync {
                         Shard targetShard = stm.getShardAt(modelRow);
 
                         JPopupMenu menu = new JPopupMenu();
+                        JMenuItem editShard = new JMenuItem("Edit Challenge/Response");
                         JMenuItem purgeShard = new JMenuItem("Purge");
+
+                        menu.add(editShard);
                         menu.add(purgeShard);
 
                         purgeShard.addActionListener(evt -> {
                             controller.purgeShard(targetShard);
+                        });
+
+                        editShard.addActionListener(evt -> {
+                            new ShardEditWindow(frame, targetShard).setVisible(true);
                         });
 
                         menu.show(source, e.getX(), e.getY());

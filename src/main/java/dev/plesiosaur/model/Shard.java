@@ -11,6 +11,8 @@ import java.util.UUID;
 public class Shard {
     private final UUID id;
     private final ZonedDateTime created;
+    private String challengeText;
+    private String responseText;
     private String key;
     private ZonedDateTime nextJack;
     private boolean marked;
@@ -98,5 +100,21 @@ public class Shard {
             this.marked = marked;
             notifyObservers();
         }
+    }
+
+    public String getChallengeText() {
+        return challengeText;
+    }
+
+    public void setChallengeText(String challengeText) {
+        this.challengeText = challengeText;
+    }
+
+    public String getResponseText() {
+        return responseText;
+    }
+
+    public void setResponseText(String responseText) {
+        this.responseText = responseText;
     }
 }
