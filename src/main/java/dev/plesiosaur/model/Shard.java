@@ -14,6 +14,7 @@ public class Shard {
     private String challengeText;
     private String responseText;
     private String key;
+    private int decayWindow;
     private ZonedDateTime nextJack;
     private boolean marked;
     private boolean coldStorage;
@@ -116,5 +117,27 @@ public class Shard {
 
     public void setResponseText(String responseText) {
         this.responseText = responseText;
+    }
+
+    public int getDecayWindow() {
+        return decayWindow;
+    }
+
+    public void incrementDecayWindow() {
+        setDecayWindow(decayWindow + 1);
+    }
+
+    public void resetDecayWindow() {
+        setDecayWindow(0);
+    }
+
+    public void setDecayWindow(int decayWindow) {
+        if(decayWindow < 0) decayWindow = 0;
+        if(decayWindow > 9) decayWindow = 9;
+
+        if(this.decayWindow != decayWindow) {
+            this.decayWindow = decayWindow;
+            notifyObservers();
+        }
     }
 }
