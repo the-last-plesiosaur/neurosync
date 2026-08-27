@@ -16,6 +16,16 @@ public class ShardEditWindow extends JDialog {
         setSize(new Dimension(800, 500));
         setLocationRelativeTo(parent);
 
+        JMenuBar menuBar = new JMenuBar();
+        JMenu editMenu = new JMenu("Edit");
+        menuBar.add(editMenu);
+
+        JMenuItem closeWindow = new JMenuItem("Close");
+        closeWindow.addActionListener(e -> dispose());
+        editMenu.add(closeWindow);
+
+        setJMenuBar(menuBar);
+
         JTabbedPane tabbedPane = new JTabbedPane();
 
         JPanel challengePanel = new JPanel();
