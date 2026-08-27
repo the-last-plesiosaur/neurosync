@@ -1,5 +1,6 @@
 package dev.plesiosaur.gui;
 
+import dev.plesiosaur.controller.AppController;
 import dev.plesiosaur.model.Shard;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ public class ShardEditWindow extends JDialog implements WindowListener {
     private boolean unsavedChanges = false;
 
 
-    public ShardEditWindow(JFrame parent, Shard shard) {
+    public ShardEditWindow(JFrame parent, AppController controller, Shard shard) {
         super(parent, shard.getId().toString(), true);
 
         setSize(new Dimension(800, 500));
@@ -46,6 +47,11 @@ public class ShardEditWindow extends JDialog implements WindowListener {
         JButton commitButton = new JButton("Commit");
         commitButton.setEnabled(false);
 
+        JCheckBox resetDecay = new JCheckBox("Reset Decay Window?");
+        resetDecay.setSelected(false);
+        resetDecay.setEnabled(false);
+
+
         JButton revertButton = new JButton("Revert");
         revertButton.setEnabled(false);
 
@@ -64,19 +70,25 @@ public class ShardEditWindow extends JDialog implements WindowListener {
                     unsavedChanges = false;
                     commitButton.setEnabled(false);
                     revertButton.setEnabled(false);
+                    resetDecay.setEnabled(false);
                 } else {
                     unsavedChanges = true;
                     commitButton.setEnabled(true);
                     revertButton.setEnabled(true);
+                    resetDecay.setEnabled(true);
                 }
             }
         });
 
         commitButton.addActionListener(e -> {
             String newChallengeText = textArea.getText().trim();
-            shard.setChallengeText(newChallengeText);
+            controller.setChallengeShard(shard, newChallengeText, true);
+
+            // need to reset decay window
             commitButton.setEnabled(false);
             revertButton.setEnabled(false);
+            resetDecay.setEnabled(false);
+            resetDecay.setSelected(false);
             unsavedChanges = false;
         });
 
@@ -92,15 +104,19 @@ public class ShardEditWindow extends JDialog implements WindowListener {
             if(response == JOptionPane.YES_OPTION) {
                 textArea.setText(shard.getChallengeText());
                 commitButton.setEnabled(false);
+                resetDecay.setEnabled(false);
+                resetDecay.setSelected(false);
                 revertButton.setEnabled(false);
             }
         });
 
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.add(previewButton);
-        buttonPanel.add(commitButton);
         buttonPanel.add(revertButton);
+        buttonPanel.add(commitButton);
+        buttonPanel.add(resetDecay);
 
         challengePanel.add(buttonPanel, BorderLayout.SOUTH);
 

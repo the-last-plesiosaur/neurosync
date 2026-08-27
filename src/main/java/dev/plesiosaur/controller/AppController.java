@@ -86,4 +86,9 @@ public class AppController {
         model.getCommandStack().execute(cmdPurgeShard);
     }
 
+    public void setChallengeShard(Shard shard, String challengeText, boolean resetDecayWindow) {
+        CmdSetChallengeShard cmdSetChallengeShard = new CmdSetChallengeShard(shard, challengeText, resetDecayWindow);
+        model.getCommandStack().execute(cmdSetChallengeShard);
+    }
+
 }

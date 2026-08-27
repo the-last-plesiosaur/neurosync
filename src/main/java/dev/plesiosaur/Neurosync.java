@@ -100,7 +100,7 @@ public class Neurosync {
                         });
 
                         editShard.addActionListener(evt -> {
-                            new ShardEditWindow(frame, targetShard).setVisible(true);
+                            new ShardEditWindow(frame, controller, targetShard).setVisible(true);
                         });
 
                         menu.show(source, e.getX(), e.getY());
