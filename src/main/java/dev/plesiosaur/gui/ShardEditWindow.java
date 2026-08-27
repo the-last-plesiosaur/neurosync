@@ -6,22 +6,27 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
-public class ShardEditWindow extends JDialog {
+public class ShardEditWindow extends JDialog implements WindowListener {
+
+    private boolean unsavedChanges = false;
 
 
     public ShardEditWindow(JFrame parent, Shard shard) {
-        super(parent, "Edit " + shard.getId(), true);
+        super(parent, shard.getId().toString(), true);
 
         setSize(new Dimension(800, 500));
         setLocationRelativeTo(parent);
+
 
         JMenuBar menuBar = new JMenuBar();
         JMenu editMenu = new JMenu("Edit");
         menuBar.add(editMenu);
 
         JMenuItem closeWindow = new JMenuItem("Close");
-        closeWindow.addActionListener(e -> dispose());
+        closeWindow.addActionListener(e -> dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING)));
         editMenu.add(closeWindow);
 
         setJMenuBar(menuBar);
@@ -32,6 +37,7 @@ public class ShardEditWindow extends JDialog {
         challengePanel.setLayout(new BorderLayout());
 
         JTextArea textArea = new JTextArea(10, 30);
+        textArea.setTabSize(4);
         textArea.setText(shard.getChallengeText());
         JScrollPane scrollPane = new JScrollPane(textArea);
         challengePanel.add(scrollPane, BorderLayout.CENTER);
@@ -55,9 +61,11 @@ public class ShardEditWindow extends JDialog {
 
             private void handleTextChange() {
                 if(textArea.getText().trim().equals(shard.getChallengeText())) {
+                    unsavedChanges = false;
                     commitButton.setEnabled(false);
                     revertButton.setEnabled(false);
                 } else {
+                    unsavedChanges = true;
                     commitButton.setEnabled(true);
                     revertButton.setEnabled(true);
                 }
@@ -69,6 +77,7 @@ public class ShardEditWindow extends JDialog {
             shard.setChallengeText(newChallengeText);
             commitButton.setEnabled(false);
             revertButton.setEnabled(false);
+            unsavedChanges = false;
         });
 
         revertButton.addActionListener(e -> {
@@ -95,9 +104,6 @@ public class ShardEditWindow extends JDialog {
 
         challengePanel.add(buttonPanel, BorderLayout.SOUTH);
 
-
-
-
         JPanel responsePanel = new JPanel();
         responsePanel.setLayout(new FlowLayout());
         responsePanel.add(new JLabel("Response"));
@@ -105,8 +111,44 @@ public class ShardEditWindow extends JDialog {
         tabbedPane.addTab("Challenge", challengePanel);
         tabbedPane.addTab("Response", responsePanel);
         add(tabbedPane);
+
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(this);
     }
 
+    @Override
+    public void windowClosing(WindowEvent e) {
+        if(unsavedChanges) {
+            int response = JOptionPane.showConfirmDialog(
+                    this,
+                    "You have uncommitted edits. Do you want to close the editor?",
+                    "Uncommited Edits",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+            if (response == JOptionPane.YES_OPTION) {
+                dispose();
+            }
+        } else {
+            dispose();
+        }
+    }
 
+    @Override
+    public void windowOpened(WindowEvent e) {}
 
+    @Override
+    public void windowClosed(WindowEvent e) {}
+
+    @Override
+    public void windowIconified(WindowEvent e) {}
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {}
+
+    @Override
+    public void windowActivated(WindowEvent e) {}
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {}
 }
