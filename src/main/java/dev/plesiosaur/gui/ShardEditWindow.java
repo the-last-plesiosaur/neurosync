@@ -62,9 +62,19 @@ public class ShardEditWindow extends JDialog {
         });
 
         revertButton.addActionListener(e -> {
-            textArea.setText(shard.getChallengeText());
-            commitButton.setEnabled(false);
-            revertButton.setEnabled(false);
+            int response = JOptionPane.showConfirmDialog(
+                    this,
+                    "Do you want to revert your changes?",
+                    "Confirm Revert",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+
+            if(response == JOptionPane.YES_OPTION) {
+                textArea.setText(shard.getChallengeText());
+                commitButton.setEnabled(false);
+                revertButton.setEnabled(false);
+            }
         });
 
         JPanel buttonPanel = new JPanel();
