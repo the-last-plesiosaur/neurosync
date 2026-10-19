@@ -6,6 +6,5 @@ import java.util.UUID;
 
 public interface DeckRepository extends JpaRepository<Deck, UUID> {
 
-    public Deck findByTitle(String title);
 
 }

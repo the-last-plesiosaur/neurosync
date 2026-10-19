@@ -15,5 +15,4 @@ public class Deck {
 
     private String title;
     private String description;
-
 }
