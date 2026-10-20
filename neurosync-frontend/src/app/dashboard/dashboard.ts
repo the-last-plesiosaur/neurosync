@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import {  MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Component({
-  imports: [],
+  imports: [MatSlideToggle],
   selector: 'app-dashboard',
   styleUrl: './dashboard.scss',
   templateUrl: './dashboard.html',
